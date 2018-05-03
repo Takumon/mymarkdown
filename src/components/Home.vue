@@ -54,6 +54,7 @@
 <style lang="scss" scoped>
 .app-title {
   font-size: 64px;
+  margin-top: 64px;
   margin-bottom: 48px;
 }
 
@@ -78,7 +79,7 @@
   border-left: 6px solid;
   height: 48px;
   line-height: 48px;
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 .login-button-area {
   margin-top: 24px;

@@ -1,32 +1,52 @@
 <template>
   <div class="editor">
-    <h1>エディター画面</h1>
-    <span>{{user.displayName}}</span>
-    <button @click="logout">ログアウト</button>
+    <div class="header">
+      <h1 class="screen-title">Markdown Mome</h1>
+      <div class="user-info-area">
+        <div class="user-info"><i class="fas fa-user"></i> {{user.displayName}}</div>
+        <md-button
+          @click="logout"><i class="btn-icon fas fa-sign-out-alt"></i> LOOUT</md-button>
+      </div>
+    </div>
     <div>
       <div class="memoListWrapper">
-        <div
-          class="memoList"
-          v-for="(memo, index) in memos"
-          :key="index"
-          @click="selectMemo(index)"
-          :data-selected="index==selectedIndex" >
-          <p class="memoTitle">{{displayTitle(memo.markdown)}}</p>
+        <md-list>
+          <md-list-item
+            class="memoList"
+            v-for="(memo, index) in memos"
+            :key="index"
+            @click="selectMemo(index)"
+            :data-selected="index==selectedIndex" >
+            <p class="memoTitle">{{displayTitle(memo.markdown)}}</p>
+          </md-list-item>
+        </md-list>
+
+        <div class="btn-area">
+          <div>
+            <md-tooltip>Add Memo</md-tooltip>
+            <md-button
+              class="md-raised md-icon-button addMemoBtn"
+              @click="addMemo"><i class="btn-icon fas fa-plus"></i></md-button>
+          </div>
+          <div>
+            <md-tooltip>Delete Selected Memo</md-tooltip>
+            <md-button
+              class="md-raised md-icon-button deleteMemoBtn"
+              v-if="memos.length > 1"
+              @click="deleteMemo"><i class="btn-icon fas fa-trash-alt"></i><md-tooltip>Add Memo</md-tooltip></md-button>
+          </div>
+          <div>
+            <md-tooltip>Save Memos</md-tooltip>
+            <md-button
+              class="md-raised md-icon-button saveMemosBtn"
+              @click="saveMemos"><i class="btn-icon fas fa-save"></i></md-button>
+          </div>
         </div>
-        <button class="addMemoBtn" @click="addMemo">メモの追加</button>
-        <button
-            class="deleteMemoBtn"
-            v-if="memos.length > 1"
-            @click="deleteMemo"
-            >選択中のメモの削除</button>
-        <button
-            class="saveMemosBtn"
-            @click="saveMemos"
-            >メモの保存</button>
+
       </div>
 
       <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
-      <div class="preview" v-html="preview()"></div>
+      <div class="preview markdown-body" v-html="preview()"></div>
     </div>
   </div>
 </template>
@@ -93,44 +113,94 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header {
+  display: flex;
+  margin-top: 24px;
+  margin-bottom: 48px;
+
+  .screen-title {
+    text-align: left;
+    font-size: 36px;
+    text-indent: 12px;
+    height: 48px;
+    line-height: 48px;
+    margin: 0;
+    white-space: nowrap;
+}
+
+
+  .user-info-area {
+    display: flex;
+    justify-content: flex-end;
+    align-content: stretch;
+    width: 100%;
+  }
+  .user-info {
+    line-height: 48px;
+  }
+
+}
 .memoListWrapper {
   width: 19%;
   float: left;
-  border-top: 1px solid #000;
+}
+.md-list {
+  padding: 0;
 }
 .memoList {
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: left;
-  border-bottom: 1px solid #000;
-  &:nth-child(even)​ {
-    background-color: #ccc;
-  }
+  width: 320px;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: top;
+  border: 1px solid rgba(#000, .12);
+  margin: -1px 0 0 0;
+
   &[data-selected="true"] {
-    background-color: #ccf;
+    background: #ecf3f9;
+    border-right: 0;
+    border-left: 6px solid #0c2ad0;
   }
 }
 
 .memoTitle {
-  height: 1.5em;
+  height: 1.2em;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
 }
 .addMemoBtn {
-  margin-top: 20px;
 }
 .deleteMemoBtn {
-  margin: 10px;
 }
+
 .markdown {
+  outline: 0;
+  border: 0;
   float: left;
   width: 40%;
-  height: 500px;
+  min-height: 500px;
+  border: 1px solid #d6d6d6;
+  border-right: 0;
+  padding: 12px;
 }
 .preview {
+  background-color: #fff;
   float: left;
   width: 40%;
   text-align: left;
+  border: 1px solid #d6d6d6;
+  padding: 12px;
+  min-height: 500px;
 }
+
+.btn-area {
+  display: flex;
+  margin: 10px;
+
+  .btn-icon {
+    font-size: 1.2em;
+  }
+
+}
+
 </style>
