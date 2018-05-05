@@ -36,16 +36,33 @@
     // 認証失敗時の処理
     methods: {
       loginWithGoogle: function() {
-        firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
-      },
+        firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+        .then(function(result) {
+        })
+        .catch(function(error) {
+          alert('[' + error.code + ']' + error.message);
+        });      },
       loginWithFacebook: function() {
-        firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider());
-      },
+        firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        .then(function(result) {
+        })
+        .catch(function(error) {
+          alert('[' + error.code + ']' + error.message);
+        });      },
       loginWithTwitter: function() {
-        firebase.auth().signInWithPopup(new firebase.auth.TwitterAuthProvider());
-      },
+        firebase.auth().signInWithPopup(new firebase.auth.TwitterAuthProvider())
+        .then(function(result) {
+        })
+        .catch(function(error) {
+          alert('[' + error.code + ']' + error.message);
+        });      },
       loginWithGithub: function() {
-        firebase.auth().signInWithPopup(new firebase.auth.GithubAuthProvider());
+        firebase.auth().signInWithPopup(new firebase.auth.GithubAuthProvider())
+        .then(function(result) {
+        })
+        .catch(function(error) {
+          alert('[' + error.code + ']' + error.message);
+        });
       },
     }
   }
@@ -64,7 +81,8 @@
 }
 
 .content {
-  width: 480px;
+  max-width: 480px;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
   padding: 36px 0;
@@ -89,12 +107,28 @@
   align-items: center;
 
   button.md-raised {
-    width: 360px;
+    max-width: 360px;
+    width: 80%;
     margin: 6px;
 
     .btn-icon {
       margin-right: 10px;
     }
+  }
+}
+
+@media (max-width: 586px) {
+  .app-title {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+  .app-discription {
+    margin-bottom: 36px;
+  }
+  .content-discription {
+    font-size: 24px;
+    line-height: 36px;
+    height: 36px;
   }
 }
 </style>
