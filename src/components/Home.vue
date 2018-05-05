@@ -48,13 +48,15 @@
         this.loginWith(new firebase.auth.GithubAuthProvider())
       },
       loginWith: function(provider) {
-        this.$emit('login-check-start')
+
+        this.$emit('login-check-start');
         firebase.auth().signInWithPopup(provider)
-        .then(function(result) {
-          this.$emit('login-check-end')
+        .then(result => {
+          this.$emit('login-check-end');
+          this.$router.push('/editor');
         })
-        .catch(function(error) {
-          this.$emit('login-check-end')
+        .catch(error => {
+          this.$emit('login-check-end');
           alert('[' + error.code + ']' + error.message);
         });
       }

@@ -86,9 +86,9 @@ import hljs from 'highlightjs';
 export default {
   name: 'editor',
   // 親コンポーネントから渡されるオブジェクト
-  props: ['user'],
   data () {
     return {
+      user: null,
       activeTab: 'tab-editor-and-preview',
       menuVisible: true,
       showSavedSnackbar: false,
@@ -100,6 +100,7 @@ export default {
     }
   },
   created: function() {
+    this.user = firebase.auth().currentUser;
     marked.setOptions({
       langPrefix: '',
       highlight: function (code, langAndTitle, callback) {
@@ -121,6 +122,7 @@ export default {
   methods: {
     logout: function() {
       firebase.auth().signOut();
+      this.$router.push('/login');
     },
     preview: function() {
       return marked(this.memos[this.selectedIndex].markdown)
