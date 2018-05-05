@@ -1,7 +1,15 @@
 <template>
   <div id="app">
-    <Home v-if="!isLogin"></Home>
-    <Editor v-if="isLogin" :user="userData"></Editor>
+    <div v-if="!hasCheckedAuth" class="waiting">
+      <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+    </div>
+    <template v-if="hasCheckedAuth">
+      <Home v-if="!isLogin"
+        v-on:login-check-start="hasCheckedAuth = false"
+        v-on:login-check-end="hasCheckedAuth = true"
+        ></Home>
+      <Editor v-if="isLogin" :user="userData"></Editor>
+    </template>
   </div>
 </template>
 
@@ -13,15 +21,22 @@ export default {
   name: 'app',
   data () {
     return {
+      hasCheckedAuth: false,
       isLogin: false,
       userData: null,
     }
   },
   created: function() {
     firebase.auth().onAuthStateChanged(user => {
-      console.log(user);
-      this.isLogin = !!user
-      this.userData = user
+      if (user) {
+        this.isLogin = true;
+        this.userData = user;
+      } else {
+        this.isLogin = false;
+        this.userData = null;
+      }
+
+      this.hasCheckedAuth = true;
     })
   },
   components: {
@@ -38,6 +53,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.waiting {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 h1, h2 {

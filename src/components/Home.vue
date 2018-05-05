@@ -36,34 +36,28 @@
     // 認証失敗時の処理
     methods: {
       loginWithGoogle: function() {
-        firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
-        .then(function(result) {
-        })
-        .catch(function(error) {
-          alert('[' + error.code + ']' + error.message);
-        });      },
+        this.loginWith(new firebase.auth.GoogleAuthProvider());
+      },
       loginWithFacebook: function() {
-        firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
-        .then(function(result) {
-        })
-        .catch(function(error) {
-          alert('[' + error.code + ']' + error.message);
-        });      },
+        this.loginWith(new firebase.auth.FacebookAuthProvider());
+      },
       loginWithTwitter: function() {
-        firebase.auth().signInWithPopup(new firebase.auth.TwitterAuthProvider())
-        .then(function(result) {
-        })
-        .catch(function(error) {
-          alert('[' + error.code + ']' + error.message);
-        });      },
+        this.loginWith(new firebase.auth.TwitterAuthProvider());
+      },
       loginWithGithub: function() {
-        firebase.auth().signInWithPopup(new firebase.auth.GithubAuthProvider())
+        this.loginWith(new firebase.auth.GithubAuthProvider())
+      },
+      loginWith: function(provider) {
+        this.$emit('login-check-start')
+        firebase.auth().signInWithPopup(provider)
         .then(function(result) {
+          this.$emit('login-check-end')
         })
         .catch(function(error) {
+          this.$emit('login-check-end')
           alert('[' + error.code + ']' + error.message);
         });
-      },
+      }
     }
   }
 </script>
