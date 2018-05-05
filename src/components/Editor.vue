@@ -81,6 +81,7 @@
 
 <script>
 import marked from 'marked';
+import hljs from 'highlightjs';
 
 export default {
   name: 'editor',
@@ -99,6 +100,14 @@ export default {
     }
   },
   created: function() {
+    marked.setOptions({
+      langPrefix: '',
+      highlight: function (code, langAndTitle, callback) {
+        const lang = langAndTitle ? langAndTitle.split(':')[0] : '';
+        return hljs.highlightAuto(code, [lang]).value;
+      }
+    });
+
     firebase
       .database()
       .ref('memos/' + this.user.uid)
