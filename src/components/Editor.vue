@@ -66,13 +66,23 @@
       </div>
 
 
-      <md-button v-if="memos.length > 1" class="md-button md-fab md-raised md-plain delete-button" @click="deleteMemo">
+      <md-button v-if="memos.length > 1" class="md-button md-fab md-raised md-plain delete-button" @click="showDeletingDialog = true">
         <i class="btn-icon fas fa-trash-alt"></i>
       </md-button>
 
       <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos">
         <i class="btn-icon fas fa-save"></i>
       </md-button>
+
+
+      <md-dialog-confirm
+        :md-active.sync="showDeletingDialog"
+        md-title="Delete the memo?"
+        md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
+        md-confirm-text="Delete"
+        md-cancel-text="Cancel"
+        @md-cancel="onDeletingCancel"
+        @md-confirm="deleteMemo" />
 
       <md-snackbar :md-position="center" :md-duration="4000" :md-active.sync="showSavedSnackbar" md-persistent>
         <span>Saved the memo</span>
@@ -102,6 +112,7 @@ export default {
       menuVisible: true,
       showSavedSnackbar: false,
       showDeletedSnackbar: false,
+      showDeletingDialog: false,
       memos: [],
       selectedIndex: 0,
     }
@@ -159,6 +170,9 @@ export default {
       this.menuVisible = false; // サイドメニューを閉じる
     },
     deleteMemo: function() {
+      this.showDeletingDialog = true;
+    },
+    deleteMemo: function() {
       this.memos.splice(this.selectedIndex, 1)
       if (this.selectedIndex > 0) {
         this.selectedIndex--;
@@ -176,6 +190,9 @@ export default {
             this.showDeletedSnackbar = true;
           }
         });
+    },
+    onDeletingCancel: function() {
+      // do nothing
     },
     saveMemos: function() {
       this.memos[this.selectedIndex].updated = new Date().toString();
