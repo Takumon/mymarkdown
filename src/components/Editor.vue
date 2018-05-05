@@ -339,6 +339,7 @@ export default {
     transition: width 0.5s;
   }
   .preview {
+    font-size: 0.7em;
     background-color: #fff;
     text-align: left;
     border: 1px solid #d6d6d6;
