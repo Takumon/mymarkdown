@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div v-if="!hasCheckedAuth" class="waiting">
+    <div v-if="!loading" class="waiting">
       <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
     </div>
       <router-view
-        v-on:login-check-start="hasCheckedAuth = false"
-        v-on:login-check-end="hasCheckedAuth = true"
+        v-on:loading-start="loading = false"
+        v-on:loading-end="loading = true"
         ></router-view>
 
   </div>
@@ -19,14 +19,14 @@ export default {
   name: 'app',
   data () {
     return {
-      hasCheckedAuth: false,
+      loading: false,
       isLogin: false,
     }
   },
   created: function() {
     firebase.auth().onAuthStateChanged(user => {
       this.isLogin = !!user;
-      this.hasCheckedAuth = true;
+      this.loading = true;
     })
   },
   components: {

@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import Home from './components/Home.vue';
 import Editor from './components/Editor.vue';
+import './helpers/dateFormatFilter.js'
 
 
 Vue.config.devtools = true

@@ -28,7 +28,7 @@
     </md-app-toolbar>
 
     <md-app-drawer md-permanent="full" :md-active.sync="menuVisible">
-      <md-toolbar class="md-transparent" md-elevation="0">
+      <md-toolbar class="md-transparent memo-list-title" md-elevation="0">
         Memo list
       </md-toolbar>
       <md-list>
@@ -38,7 +38,7 @@
           :key="index"
           @click="selectMemo(index)"
           :data-selected="index==selectedIndex" >
-          <p class="memoTitle">{{displayTitle(memo.markdown)}}</p>
+          <p class="memo-title">{{displayTitle(memo.markdown)}}</p>
         </md-list-item>
       </md-list>
 
@@ -51,13 +51,22 @@
 
     </md-app-drawer>
 
-    <md-app-content>
-      <div class="editor" v-bind:class="activeTab" v-if="memos.length > 1">
+    <md-app-content v-if="memos[selectedIndex]">
+      <div class="memo-info-area" >
+        <md-chips v-model="memos[selectedIndex].tags" md-limit="5" md-placeholder="Add Tag..."></md-chips>
+      </div>
+      <div class="editor" v-bind:class="activeTab">
         <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
         <div class="preview markdown-body" v-html="preview()"></div>
       </div>
 
-      <md-button class="md-button md-fab md-raised md-plain delete-button" @click="deleteMemo">
+      <div class="date-area">
+        <div>Updated: {{memos[selectedIndex].updated | dateFormat('YYYY/MM/DD HH:mm') }}</div>
+        <div>Created: {{memos[selectedIndex].created | dateFormat('YYYY/MM/DD HH:mm') }}</div>
+      </div>
+
+
+      <md-button v-if="memos.length > 1" class="md-button md-fab md-raised md-plain delete-button" @click="deleteMemo">
         <i class="btn-icon fas fa-trash-alt"></i>
       </md-button>
 
@@ -93,13 +102,12 @@ export default {
       menuVisible: true,
       showSavedSnackbar: false,
       showDeletedSnackbar: false,
-      memos: [{
-        markdown: '',
-      }],
+      memos: [],
       selectedIndex: 0,
     }
   },
   created: function() {
+    this.$emit('loading-start');
     this.user = firebase.auth().currentUser;
     marked.setOptions({
       langPrefix: '',
@@ -115,8 +123,14 @@ export default {
       .once('value')
       .then(result => {
         if (result.val()) {
-          this.memos = result.val()
+          this.memos = result.val().map(m => {
+            m.tags = JSON.parse(m.tags);
+            return m;
+          });
+        } else {
+          this.addMemo()
         }
+        this.$emit('loading-end');
       })
   },
   methods: {
@@ -132,8 +146,12 @@ export default {
       return text.split(/\n/)[0];
     },
     addMemo: function() {
+      const sysdate = new Date().toString();
       this.memos.push({
         markdown: '無題のメモ',
+        tags: [],
+        updated: sysdate,
+        created: sysdate,
       })
     },
     selectMemo: function(index) {
@@ -145,14 +163,35 @@ export default {
       if (this.selectedIndex > 0) {
         this.selectedIndex--;
       }
-      this.showDeletedSnackbar = true;
-    },
-    saveMemos: function() {
       firebase
         .database()
         .ref('memos/' + this.user.uid)
-        .set(this.memos)
-      this.showSavedSnackbar = true;
+        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
+          m.tags = JSON.stringify(m.tags);
+          return m;
+        }), error => {
+          if(error) {
+            alert("Fial to delete memo");
+          } else {
+            this.showDeletedSnackbar = true;
+          }
+        });
+    },
+    saveMemos: function() {
+      this.memos[this.selectedIndex].updated = new Date().toString();
+      firebase
+        .database()
+        .ref('memos/' + this.user.uid)
+        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
+          m.tags = JSON.stringify(m.tags);
+          return m;
+        }), error => {
+          if(error) {
+            alert("Fial to save memos");
+          } else {
+            this.showSavedSnackbar = true;
+          }
+        });
     },
     tabChange: function(selectedTab) {
       this.activeTab = selectedTab
@@ -162,11 +201,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.md-drawer {
-  width: 230px;
-  max-width: calc(100vw - 125px);
-}
 
 
 .md-app {
@@ -192,33 +226,76 @@ export default {
   }
 }
 
+
+.md-drawer {
+  width: 230px;
+  max-width: calc(100vw - 125px);
+  background: #262f3d;
+
+  .memo-list-title {
+    color: white;
+    font-weight: 600;
+  }
+}
+
+
 .md-list {
   padding: 0;
-}
-.memo-list-item {
-  border-bottom: 1px solid rgba(#000, .12);
 
-  &:first-child {
-    border-top: 1px solid rgba(#000, .12);
+  .memo-list-item {
+    position: relative;
+    background-color: #19212b;
+    border-bottom: 1px solid #404854;
+
+    &:hover {
+      background: #262f3d;
+    }
+
+    &:first-child {
+      border-top: 1px solid #404854;
+    }
+
+    &[data-selected="true"] {
+      background: rgba(0,0,0,0.87);
+
+      &:before {
+        display: block;
+        content: '';
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        height: 100%;
+        width: 8px;
+        background: #4fc3f8;
+      }
+
+      .memo-title {
+        color: #4fc3f8;
+      }
+    }
+
+    .memo-title {
+      color: rgb(187, 189, 192);
+      height: 1.2em;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+    }
   }
-
-  &[data-selected="true"] {
-    background: #ecf3f9;
-    border-right: 0;
-    border-left: 8px solid #0c2ad0;
-  }
 }
-
-
-.memoTitle {
-  height: 1.2em;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .addMemoBtn {
   margin: 10px;
+}
+
+
+
+
+.memo-info-area {
+  display: flex;
+
+  .md-chips {
+    font-size: 0.7em;
+  }
 }
 
 .editor {
@@ -281,6 +358,17 @@ export default {
   bottom: 24px;
   right: 6px;
 }
+
+.date-area {
+  margin-top: 24px;
+  display: flex;
+  flex-flow: column;
+  div {
+    color: gray;
+    margin-right: auto;
+  }
+}
+
 
 @media (max-width: 586px) {
   .md-app-toolbar {

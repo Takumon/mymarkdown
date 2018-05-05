@@ -49,14 +49,14 @@
       },
       loginWith: function(provider) {
 
-        this.$emit('login-check-start');
+        this.$emit('loading-start');
         firebase.auth().signInWithPopup(provider)
         .then(result => {
-          this.$emit('login-check-end');
           this.$router.push('/editor');
+          this.$emit('loading-end');
         })
         .catch(error => {
-          this.$emit('login-check-end');
+          this.$emit('loading-end');
           alert('[' + error.code + ']' + error.message);
         });
       }
