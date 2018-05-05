@@ -55,7 +55,7 @@
       <div class="memo-info-area" >
         <md-chips v-model="memos[selectedIndex].tags" md-limit="5" md-placeholder="Add Tag..."></md-chips>
       </div>
-      <div class="editor" v-bind:class="activeTab">
+      <div class="editor" v-bind:class="activeTab" @keyup.ctrl.83="saveMemos">
         <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
         <div class="preview markdown-body" v-html="preview()"></div>
       </div>
@@ -115,6 +115,7 @@ export default {
       showDeletingDialog: false,
       memos: [],
       selectedIndex: 0,
+      intervalId: null,
     }
   },
   created: function() {
@@ -144,6 +145,14 @@ export default {
         this.$emit('loading-end');
       })
   },
+  mounted: function() {
+    this.intervalId = setInterval(() => {
+      this.saveMemos();
+    }, 40 * 1000);
+  },
+  beforeDestroy () {
+    clearInterval(this.intervalId)
+  },
   methods: {
     logout: function() {
       firebase.auth().signOut();
@@ -166,6 +175,7 @@ export default {
       })
     },
     selectMemo: function(index) {
+      this.saveMemos();
       this.selectedIndex = index;
       this.menuVisible = false; // サイドメニューを閉じる
     },
