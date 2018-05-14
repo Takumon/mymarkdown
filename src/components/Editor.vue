@@ -86,7 +86,7 @@
 
       <md-snackbar :md-position="center" :md-duration="4000" :md-active.sync="showSavedSnackbar" md-persistent>
         <span>Saved the memo</span>
-        <md-button class="" @click="showSavedSnackbar = false"><i class="fas fa-times"></i></md-button>
+        <md-button class="" @click="setShowSavedSnackbar(false)"><i class="fas fa-times"></i></md-button>
       </md-snackbar>
       <md-snackbar :md-position="center" :md-duration="4000" :md-active.sync="showDeletedSnackbar" md-persistent>
         <span>Deleted the memo</span>
@@ -101,6 +101,7 @@
 <script>
 import marked from 'marked';
 import hljs from 'highlightjs';
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'editor',
@@ -110,12 +111,21 @@ export default {
       user: null,
       activeTab: 'tab-editor-and-preview',
       menuVisible: true,
-      showSavedSnackbar: false,
       showDeletedSnackbar: false,
       showDeletingDialog: false,
       memos: [],
       selectedIndex: 0,
       intervalId: null,
+    }
+  },
+  computed: {
+    showSavedSnackbar: {
+      get () {
+        return this.$store.state.showSavedSnackbar
+      },
+      set (val) {
+        this.setShowSavedSnackbar(val)
+      }
     }
   },
   created: function() {
@@ -154,6 +164,9 @@ export default {
     clearInterval(this.intervalId)
   },
   methods: {
+    ...mapActions([
+      'setShowSavedSnackbar'
+    ]),
     logout: function() {
       firebase.auth().signOut();
       this.$router.push('/login');
@@ -216,7 +229,7 @@ export default {
           if(error) {
             alert("Fial to save memos");
           } else {
-            this.showSavedSnackbar = true;
+            this.setShowSavedSnackbar(true);
           }
         });
     },
