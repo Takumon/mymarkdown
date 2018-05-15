@@ -3,17 +3,19 @@
     <div v-if="!loading" class="waiting">
       <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
     </div>
+
       <router-view
         v-on:loading-start="loading = false"
         v-on:loading-end="loading = true"
         ></router-view>
-
+      <Notification></Notification>
   </div>
 </template>
 
 <script>
 import Home from './components/Home.vue';
 import Editor from './components/Editor.vue';
+import Notification from './components/Notification.vue';
 
 export default {
   name: 'app',
@@ -31,7 +33,8 @@ export default {
   },
   components: {
     'Home': Home,
-    'Editor': Editor
+    'Editor': Editor,
+    'Notification': Notification,
   },
 }
 </script>

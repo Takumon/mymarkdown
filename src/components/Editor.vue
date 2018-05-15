@@ -74,25 +74,6 @@
         <i class="btn-icon fas fa-save"></i>
       </md-button>
 
-
-      <md-dialog-confirm
-        :md-active.sync="showDeletingDialog"
-        md-title="Delete the memo?"
-        md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
-        md-confirm-text="Delete"
-        md-cancel-text="Cancel"
-        @md-cancel="onDeletingCancel"
-        @md-confirm="deleteMemo" />
-
-      <md-snackbar :md-position="center" :md-duration="4000" :md-active.sync="showSavedSnackbar" md-persistent>
-        <span>Saved the memo</span>
-        <md-button class="" @click="setShowSavedSnackbar(false)"><i class="fas fa-times"></i></md-button>
-      </md-snackbar>
-      <md-snackbar :md-position="center" :md-duration="4000" :md-active.sync="showDeletedSnackbar" md-persistent>
-        <span>Deleted the memo</span>
-        <md-button class="" @click="showDeletedSnackbar = false"><i class="fas fa-times"></i></md-button>
-      </md-snackbar>
-
     </md-app-content>
   </md-app>
 
@@ -111,7 +92,6 @@ export default {
       user: null,
       activeTab: 'tab-editor-and-preview',
       menuVisible: true,
-      showDeletedSnackbar: false,
       showDeletingDialog: false,
       memos: [],
       selectedIndex: 0,
@@ -123,8 +103,24 @@ export default {
       get () {
         return this.$store.state.showSavedSnackbar
       },
-      set (val) {
-        this.setShowSavedSnackbar(val)
+      set (isShow) {
+        this.setShowSavedSnackbar(isShow)
+      }
+    },
+    showDeletedSnackbar: {
+      get () {
+        return this.$store.state.showDeletedSnackbar
+      },
+      set (isShow) {
+        this.setShowDeletedSnackbar(isShow)
+      }
+    },
+    showDeletingDialog: {
+      get () {
+        return this.$store.state.showDeletingDialog
+      },
+      set (isShow) {
+        this.setShowDeletingDialog(isShow)
       }
     }
   },
@@ -165,7 +161,9 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setShowSavedSnackbar'
+      'setShowSavedSnackbar',
+      'setShowDeletedSnackbar',
+      'setShowDeletingDialog',
     ]),
     logout: function() {
       firebase.auth().signOut();
@@ -210,7 +208,7 @@ export default {
           if(error) {
             alert("Fial to delete memo");
           } else {
-            this.showDeletedSnackbar = true;
+            this.setShowDeletedSnackbar(true);
           }
         });
     },
