@@ -78,7 +78,6 @@ export default {
   },
   computed: {
     ...mapState([
-      'textEditorPreviewMode',
       'loginUser',
     ]),
     showSidebar: {
