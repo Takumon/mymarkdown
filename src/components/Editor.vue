@@ -31,29 +31,22 @@
 
     </md-app-drawer>
 
-    <md-app-content v-if="memos[selectedIndex]">
-      <div class="memo-info-area" >
-        <md-chips v-model="memos[selectedIndex].tags" md-limit="5" md-placeholder="Add Tag..."></md-chips>
-      </div>
-      <div class="editor" v-bind:class="textEditorPreviewMode" @keyup.ctrl.83="saveMemos">
-        <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
-        <div class="preview markdown-body" v-html="preview()"></div>
-      </div>
-
-      <div class="date-area">
-        <div>Updated: {{memos[selectedIndex].updated | dateFormat('YYYY/MM/DD HH:mm') }}</div>
-        <div>Created: {{memos[selectedIndex].created | dateFormat('YYYY/MM/DD HH:mm') }}</div>
-      </div>
-
-
-      <md-button v-if="memos.length > 1" class="md-button md-fab md-raised md-plain delete-button" @click="showDeletingDialog = true">
-        <i class="btn-icon fas fa-trash-alt"></i>
-      </md-button>
-
-      <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos">
-        <i class="btn-icon fas fa-save"></i>
-      </md-button>
+    <md-app-content>
+      <EditorContent
+        :memo="memos[selectedIndex]"
+        @saveMemo="saveMemos"
+        ></EditorContent>
     </md-app-content>
+
+    <md-button v-if="memos.length > 1" class="md-button md-fab md-raised md-plain delete-button" @click="showDeletingDialog = true">
+      <i class="btn-icon fas fa-trash-alt"></i>
+    </md-button>
+
+    <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos">
+      <i class="btn-icon fas fa-save"></i>
+    </md-button>
+
+
     <md-dialog-confirm
         :md-active.sync="showDeletingDialog"
         md-title="Delete the memo?"
@@ -67,11 +60,10 @@
 </template>
 
 <script>
-import marked from 'marked';
-import hljs from 'highlightjs';
 import { mapState, mapActions } from 'vuex'
 import Navigation1 from './Navigation1.vue'
 import Navigation2 from './Navigation2.vue'
+import EditorContent from './EditorContent.vue'
 
 
 export default {
@@ -107,13 +99,6 @@ export default {
   },
   created: function() {
     this.setShowLoading(true)
-    marked.setOptions({
-      langPrefix: '',
-      highlight: function (code, langAndTitle, callback) {
-        const lang = langAndTitle ? langAndTitle.split(':')[0] : '';
-        return hljs.highlightAuto(code, [lang]).value;
-      }
-    });
 
     firebase
       .database()
@@ -151,9 +136,6 @@ export default {
       'setShowSidebar',
       'setShowDeletingDialog',
     ]),
-    preview: function() {
-      return marked(this.memos[this.selectedIndex].markdown)
-    },
     displayTitle: function(text) {
       // 最初の行をタイトルとす
       return text.split(/\n/)[0];
@@ -225,6 +207,7 @@ export default {
   components: {
     'Navigation1': Navigation1,
     'Navigation2': Navigation2,
+    'EditorContent': EditorContent,
   }
 }
 </script>
@@ -299,66 +282,6 @@ export default {
 
 
 
-
-.memo-info-area {
-  display: flex;
-
-  .md-chips {
-    font-size: 0.7em;
-  }
-}
-
-.editor {
-  display: flex;
-
-  &.tab-editor {
-    .markdown {
-      width: 100%;
-      border: 1px solid #d6d6d6;
-    }
-    .preview {
-      display: none;
-    }
-  }
-
-  &.tab-editor-and-preview {
-    .markdown {
-      width: 50%;
-    }
-    .preview {
-      width: 50%;
-    }
-  }
-
-  &.tab-preview {
-    .markdown {
-      display: none;
-    }
-    .preview {
-      width: 100%;
-    }
-  }
-
-  .markdown {
-    outline: 0;
-    border: 0;
-    min-height: 500px;
-    border: 1px solid #d6d6d6;
-    border-right: 0;
-    padding: 12px;
-    transition: width 0.5s;
-  }
-  .preview {
-    font-size: 0.7em;
-    background-color: #fff;
-    text-align: left;
-    border: 1px solid #d6d6d6;
-    padding: 12px;
-    min-height: 500px;
-    transition: width 0.5s;
-  }
-}
-
 .delete-button {
   position: fixed;
   bottom: 98px;
@@ -368,16 +291,6 @@ export default {
   position: fixed;
   bottom: 24px;
   right: 6px;
-}
-
-.date-area {
-  margin-top: 24px;
-  display: flex;
-  flex-flow: column;
-  div {
-    color: gray;
-    margin-right: auto;
-  }
 }
 
 .md-app-toolbar {
