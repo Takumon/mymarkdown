@@ -21,7 +21,6 @@ export default new Vuex.Store({
       commit( 'setShowDeletingDialog', { isShow })
     },
     setShowSidebar ({ commit }, isShow ) {
-      console.log('start actions isShow = ' + isShow)
       commit( 'setShowSidebar', { isShow })
     },
     setShowLoading ({ commit }, isShow) {
@@ -32,7 +31,7 @@ export default new Vuex.Store({
     },
     setLoginUser({ commit }, loginUser) {
       commit( 'setLoginUser' , { loginUser })
-    }
+    },
   },
   mutations: {
     setShowSnackbar (state, payload) {
