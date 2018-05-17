@@ -33,6 +33,7 @@
 
     <md-app-content>
       <EditorContent
+        v-if="memos[selectedIndex]"
         :memo="memos[selectedIndex]"
         @saveMemo="saveMemos"
         ></EditorContent>
