@@ -31,6 +31,8 @@ export default {
   },
   created: function() {
     marked.setOptions({
+      gfm: true,
+      breaks: true,
       langPrefix: '',
       highlight: function (code, langAndTitle, callback) {
         const lang = langAndTitle ? langAndTitle.split(':')[0] : '';
@@ -41,8 +43,13 @@ export default {
 
   methods: {
     preview: function() {
-      console.log('preview start this.memo = ' + this.memo)
-      return marked(this.memo.markdown)
+      var html =  marked(this.memo.markdown)
+      return this.renderCheckbox(html)
+    },
+    renderCheckbox(html) {
+      return html
+              .replace(/\[x\]/g, '<input type="checkbox" checked="checked">')
+              .replace(/\[ \]/g, '<input type="checkbox">')
     },
     saveMemo: function() {
       this.$emit('saveMemo')
