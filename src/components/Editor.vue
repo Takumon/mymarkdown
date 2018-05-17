@@ -4,21 +4,21 @@
     <md-app-toolbar class="md-primary">
       <div class="md-toolbar-row">
         <div class="md-toolbar-section-start">
-          <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
+          <md-button class="md-icon-button" @click="setShowSidebar(true)">
             <md-icon>menu</md-icon>
           </md-button>
           <span class="md-title">Markdown Mome</span>
         </div>
 
         <div class="md-toolbar-section-end">
-          <div class="user-info"><i class="fas fa-user"></i> {{user.displayName}}</div>
+          <div class="user-info"><i class="fas fa-user"></i> {{loginUser.displayName}}</div>
           <md-button
             @click="logout"><i class="btn-icon fas fa-sign-out-alt"></i> LOOUT</md-button>
         </div>
       </div>
 
       <div class="md-toolbar-row">
-        <md-tabs class="md-primary" :md-active-tab.sync="activeTab" v-on:md-changed="tabChange">
+        <md-tabs class="md-primary" :md-active-tab="textEditorPreviewMode" v-on:md-changed="setTextEditorPreviewMode">
           <md-tab id="tab-editor" md-icon="mode_edit"></md-tab>
           <md-tab id="tab-editor-and-preview" md-icon="chrome_reader_mode"></md-tab>
           <md-tab id="tab-preview" md-icon="description"></md-tab>
@@ -27,7 +27,7 @@
 
     </md-app-toolbar>
 
-    <md-app-drawer md-permanent="full" :md-active.sync="menuVisible">
+    <md-app-drawer md-permanent="full" :md-active.sync="showSidebar">
       <md-toolbar class="md-transparent memo-list-title" md-elevation="0">
         Memo list
       </md-toolbar>
@@ -55,7 +55,7 @@
       <div class="memo-info-area" >
         <md-chips v-model="memos[selectedIndex].tags" md-limit="5" md-placeholder="Add Tag..."></md-chips>
       </div>
-      <div class="editor" v-bind:class="activeTab" @keyup.ctrl.83="saveMemos">
+      <div class="editor" v-bind:class="textEditorPreviewMode" @keyup.ctrl.83="saveMemos">
         <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
         <div class="preview markdown-body" v-html="preview()"></div>
       </div>
@@ -74,6 +74,15 @@
         <i class="btn-icon fas fa-save"></i>
       </md-button>
 
+      <md-dialog-confirm
+        :md-active.sync="showDeletingDialog"
+        md-title="Delete the memo?"
+        md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
+        md-confirm-text="Delete"
+        md-cancel-text="Cancel"
+        @md-cancel="onDeletingCancel"
+        @md-confirm="onDeletingConfirm" />
+
     </md-app-content>
   </md-app>
 
@@ -82,37 +91,29 @@
 <script>
 import marked from 'marked';
 import hljs from 'highlightjs';
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import Navigation from './Navigation.vue';
 
 export default {
-  name: 'editor',
-  // 親コンポーネントから渡されるオブジェクト
+  name: 'Editor',
   data () {
     return {
-      user: null,
-      activeTab: 'tab-editor-and-preview',
-      menuVisible: true,
-      showDeletingDialog: false,
       memos: [],
       selectedIndex: 0,
       intervalId: null,
     }
   },
   computed: {
-    showSavedSnackbar: {
-      get () {
-        return this.$store.state.showSavedSnackbar
+    ...mapState([
+      'textEditorPreviewMode',
+      'loginUser',
+    ]),
+    showSidebar: {
+      get() {
+        return this.$store.state.showSidebar
       },
       set (isShow) {
-        this.setShowSavedSnackbar(isShow)
-      }
-    },
-    showDeletedSnackbar: {
-      get () {
-        return this.$store.state.showDeletedSnackbar
-      },
-      set (isShow) {
-        this.setShowDeletedSnackbar(isShow)
+        this.setShowSidebar(isShow)
       }
     },
     showDeletingDialog: {
@@ -122,11 +123,18 @@ export default {
       set (isShow) {
         this.setShowDeletingDialog(isShow)
       }
-    }
+    },
+        textEditorPreviewMode: {
+      get () {
+        return this.$store.state.textEditorPreviewMode
+      },
+      set (mode) {
+        this.setTextEditorPreviewMode(mode)
+      }
+    },
   },
   created: function() {
-    this.$emit('loading-start');
-    this.user = firebase.auth().currentUser;
+    this.setShowLoading(true)
     marked.setOptions({
       langPrefix: '',
       highlight: function (code, langAndTitle, callback) {
@@ -137,7 +145,7 @@ export default {
 
     firebase
       .database()
-      .ref('memos/' + this.user.uid)
+      .ref('memos/' + this.loginUser.uid)
       .once('value')
       .then(result => {
         if (result.val()) {
@@ -148,27 +156,31 @@ export default {
         } else {
           this.addMemo()
         }
-        this.$emit('loading-end');
+        this.setShowLoading(false)
       })
   },
+
+  // 定期的にメモを保存
   mounted: function() {
     this.intervalId = setInterval(() => {
       this.saveMemos();
     }, 40 * 1000);
   },
+  // インスタンス破棄時に定期的保存処理を解除
   beforeDestroy () {
     clearInterval(this.intervalId)
   },
+
+
   methods: {
     ...mapActions([
-      'setShowSavedSnackbar',
-      'setShowDeletedSnackbar',
+      'setShowSnackbar',
+      'setShowLoading',
+      'setShowSidebar',
       'setShowDeletingDialog',
+      'setLoginUser',
+      'setTextEditorPreviewMode',
     ]),
-    logout: function() {
-      firebase.auth().signOut();
-      this.$router.push('/login');
-    },
     preview: function() {
       return marked(this.memos[this.selectedIndex].markdown)
     },
@@ -188,38 +200,16 @@ export default {
     selectMemo: function(index) {
       this.saveMemos();
       this.selectedIndex = index;
-      this.menuVisible = false; // サイドメニューを閉じる
+      this.setShowSidebar(false);
     },
     deleteMemo: function() {
-      this.showDeletingDialog = true;
-    },
-    deleteMemo: function() {
-      this.memos.splice(this.selectedIndex, 1)
-      if (this.selectedIndex > 0) {
-        this.selectedIndex--;
-      }
-      firebase
-        .database()
-        .ref('memos/' + this.user.uid)
-        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
-          m.tags = JSON.stringify(m.tags);
-          return m;
-        }), error => {
-          if(error) {
-            alert("Fial to delete memo");
-          } else {
-            this.setShowDeletedSnackbar(true);
-          }
-        });
-    },
-    onDeletingCancel: function() {
-      // do nothing
+      this.setShowDeletingDialog(true);
     },
     saveMemos: function() {
       this.memos[this.selectedIndex].updated = new Date().toString();
       firebase
         .database()
-        .ref('memos/' + this.user.uid)
+        .ref('memos/' + this.loginUser.uid)
         .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
           m.tags = JSON.stringify(m.tags);
           return m;
@@ -227,14 +217,50 @@ export default {
           if(error) {
             alert("Fial to save memos");
           } else {
-            this.setShowSavedSnackbar(true);
+            this.setShowSnackbar({
+              isShow: true,
+              text: 'Saved the memo'
+            });
+          }
+        });
+
+    },
+
+    onDeletingConfirm: function() {
+      this.memos.splice(this.selectedIndex, 1)
+      if (this.selectedIndex > 0) {
+        this.selectedIndex--;
+      }
+      firebase
+        .database()
+        .ref('memos/' + this.loginUser.uid)
+        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
+          m.tags = JSON.stringify(m.tags);
+          return m;
+        }), error => {
+          if(error) {
+            alert("Fial to delete memo");
+          } else {
+            this.setShowSnackbar({
+              isShow: true,
+              text: 'Deleted the memo'
+            });
           }
         });
     },
-    tabChange: function(selectedTab) {
-      this.activeTab = selectedTab
-    }
-  }
+    onDeletingCancel: function() {
+      this.setShowDeletingDialog(false)
+    },
+    logout: function() {
+      firebase.auth().signOut();
+      this.$router.replace('/login', () => {
+        this.setShowSnackbar({
+          isShow: true,
+          text: 'Logged out'
+        })
+      });
+    },
+  },
 }
 </script>
 
@@ -243,25 +269,6 @@ export default {
 
 .md-app {
   height: 100vh;
-}
-
-.md-app-toolbar {
-  display: flex;
-
-  .md-title {
-    white-space: nowrap;
-  }
-
-  .user-info-area {
-    display: flex;
-    justify-content: flex-end;
-    align-content: stretch;
-    margin-left: auto;
-
-    .user-info {
-      line-height: 48px;
-    }
-  }
 }
 
 
@@ -408,7 +415,6 @@ export default {
   }
 }
 
-
 @media (max-width: 586px) {
   .md-app-toolbar {
 
@@ -423,6 +429,5 @@ export default {
       font-size: 12px;
     }
   }
-
 }
 </style>

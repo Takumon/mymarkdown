@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home.vue';
+import Login from '../components/Login.vue';
 import Editor from '../components/Editor.vue';
 
 Vue.use(Router)
@@ -12,7 +12,7 @@ const router = new Router({
     },
     {
         path: '/login',
-        component: Home
+        component: Login
     },
     {
         path: '/editor',

@@ -1,40 +1,40 @@
 <template>
   <div id="app">
-    <div v-if="!loading" class="waiting">
+    <Navigation></Navigation>
+    <div v-if="showLoading" class="waiting">
       <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
     </div>
 
-      <router-view
-        v-on:loading-start="loading = false"
-        v-on:loading-end="loading = true"
-        ></router-view>
-      <Notification></Notification>
+    <router-view></router-view>
+    <Snackbar></Snackbar>
   </div>
 </template>
 
 <script>
-import Home from './components/Home.vue';
+import Login from './components/Login.vue';
 import Editor from './components/Editor.vue';
-import Notification from './components/Notification.vue';
+import Snackbar from './components/Snackbar.vue';
+import { mapState } from 'vuex';
 
 export default {
-  name: 'app',
-  data () {
-    return {
-      loading: false,
-      isLogin: false,
-    }
+  name: 'App',
+  computed: {
+    ...mapState([
+      'showLoading',
+    ])
   },
+  methods: mapState([
+    'setLoginUser'
+  ]),
   created: function() {
     firebase.auth().onAuthStateChanged(user => {
-      this.isLogin = !!user;
-      this.loading = true;
+      this.setLoginUser(true)
     })
   },
   components: {
-    'Home': Home,
+    'Login': Login,
     'Editor': Editor,
-    'Notification': Notification,
+    'Snackbar': Snackbar,
   },
 }
 </script>

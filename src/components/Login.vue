@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="login">
     <h1 class="app-title">{{app.title}}</h1>
     <p class="app-discription">{{app.discription}}</p>
     <md-content class="content md-elevation-6">
@@ -23,45 +23,53 @@
 </template>
 
 <script>
-  export default {
-    name: 'home',
-    data () {
-      return {
-        app: {
-          title: 'Markdown Mome',
-          discription: 'Online markdown memo',
-        }
-      };
-    },
-    // 認証失敗時の処理
-    methods: {
-      loginWithGoogle: function() {
-        this.loginWith(new firebase.auth.GoogleAuthProvider());
-      },
-      loginWithFacebook: function() {
-        this.loginWith(new firebase.auth.FacebookAuthProvider());
-      },
-      loginWithTwitter: function() {
-        this.loginWith(new firebase.auth.TwitterAuthProvider());
-      },
-      loginWithGithub: function() {
-        this.loginWith(new firebase.auth.GithubAuthProvider())
-      },
-      loginWith: function(provider) {
+import { mapActions } from 'vuex'
 
-        this.$emit('loading-start');
-        firebase.auth().signInWithPopup(provider)
-        .then(result => {
-          this.$router.push('/editor');
-          this.$emit('loading-end');
-        })
-        .catch(error => {
-          this.$emit('loading-end');
-          alert('[' + error.code + ']' + error.message);
-        });
+export default {
+  name: 'Login',
+  data () {
+    return {
+      app: {
+        title: 'Markdown Mome',
+        discription: 'Online markdown memo',
       }
+    };
+  },
+  // 認証失敗時の処理
+  methods: {
+    ...mapActions([
+      'setShowLoading',
+      'setLoginUser',
+    ]),
+    loginWithGoogle: function() {
+      this.loginWith(new firebase.auth.GoogleAuthProvider());
+    },
+    loginWithFacebook: function() {
+      this.loginWith(new firebase.auth.FacebookAuthProvider());
+    },
+    loginWithTwitter: function() {
+      this.loginWith(new firebase.auth.TwitterAuthProvider());
+    },
+    loginWithGithub: function() {
+      this.loginWith(new firebase.auth.GithubAuthProvider())
+    },
+    loginWith: function(provider) {
+
+      this.setShowLoading(true)
+      firebase.auth().signInWithPopup(provider)
+      .then(result => {
+        this.setLoginUser(result.user)
+        this.$router.replace('/editor', () => {
+          this.setShowLoading(false)
+        });
+      })
+      .catch(error => {
+        this.setShowLoading(false)
+        alert('[' + error.code + ']' + error.message);
+      });
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

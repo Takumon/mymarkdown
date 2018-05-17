@@ -4,8 +4,6 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import App from './App.vue'
-import Home from './components/Home.vue';
-import Editor from './components/Editor.vue';
 import './helpers/dateFormatFilter.js'
 import router from './router'
 import store from './store'
