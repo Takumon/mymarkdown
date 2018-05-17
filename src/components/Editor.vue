@@ -37,25 +37,24 @@
         :memo="memos[selectedIndex]"
         @saveMemo="saveMemos"
         ></EditorContent>
+
+      <md-button v-if="memos.length > 1" class="md-button md-fab md-raised md-plain delete-button" @click="showDeletingDialog = true">
+        <i class="btn-icon fas fa-trash-alt"></i>
+      </md-button>
+
+      <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos">
+        <i class="btn-icon fas fa-save"></i>
+      </md-button>
+
+      <md-dialog-confirm
+          :md-active.sync="showDeletingDialog"
+          md-title="Delete the memo?"
+          md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
+          md-confirm-text="Delete"
+          md-cancel-text="Cancel"
+          @md-cancel="onDeletingCancel"
+          @md-confirm="onDeletingConfirm" />
     </md-app-content>
-
-    <md-button v-if="memos.length > 1" class="md-button md-fab md-raised md-plain delete-button" @click="showDeletingDialog = true">
-      <i class="btn-icon fas fa-trash-alt"></i>
-    </md-button>
-
-    <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos">
-      <i class="btn-icon fas fa-save"></i>
-    </md-button>
-
-
-    <md-dialog-confirm
-        :md-active.sync="showDeletingDialog"
-        md-title="Delete the memo?"
-        md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
-        md-confirm-text="Delete"
-        md-cancel-text="Cancel"
-        @md-cancel="onDeletingCancel"
-        @md-confirm="onDeletingConfirm" />
   </md-app>
 
 </template>
