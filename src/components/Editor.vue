@@ -2,30 +2,10 @@
 
   <md-app md-waterfall md-mode="fixed-last">
     <md-app-toolbar class="md-primary">
-      <div class="md-toolbar-row">
-        <div class="md-toolbar-section-start">
-          <md-button class="md-icon-button" @click="setShowSidebar(true)">
-            <md-icon>menu</md-icon>
-          </md-button>
-          <span class="md-title">Markdown Mome</span>
-        </div>
-
-        <div class="md-toolbar-section-end">
-          <div class="user-info"><i class="fas fa-user"></i> {{loginUser.displayName}}</div>
-          <md-button
-            @click="logout"><i class="btn-icon fas fa-sign-out-alt"></i> LOOUT</md-button>
-        </div>
-      </div>
-
-      <div class="md-toolbar-row">
-        <md-tabs class="md-primary" :md-active-tab="textEditorPreviewMode" v-on:md-changed="setTextEditorPreviewMode">
-          <md-tab id="tab-editor" md-icon="mode_edit"></md-tab>
-          <md-tab id="tab-editor-and-preview" md-icon="chrome_reader_mode"></md-tab>
-          <md-tab id="tab-preview" md-icon="description"></md-tab>
-        </md-tabs>
-      </div>
-
+      <Navigation1></Navigation1>
+      <Navigation2></Navigation2>
     </md-app-toolbar>
+
 
     <md-app-drawer md-permanent="full" :md-active.sync="showSidebar">
       <md-toolbar class="md-transparent memo-list-title" md-elevation="0">
@@ -73,8 +53,8 @@
       <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos">
         <i class="btn-icon fas fa-save"></i>
       </md-button>
-
-      <md-dialog-confirm
+    </md-app-content>
+    <md-dialog-confirm
         :md-active.sync="showDeletingDialog"
         md-title="Delete the memo?"
         md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
@@ -82,8 +62,6 @@
         md-cancel-text="Cancel"
         @md-cancel="onDeletingCancel"
         @md-confirm="onDeletingConfirm" />
-
-    </md-app-content>
   </md-app>
 
 </template>
@@ -92,7 +70,9 @@
 import marked from 'marked';
 import hljs from 'highlightjs';
 import { mapState, mapActions } from 'vuex'
-import Navigation from './Navigation.vue';
+import Navigation1 from './Navigation1.vue'
+import Navigation2 from './Navigation2.vue'
+
 
 export default {
   name: 'Editor',
@@ -122,14 +102,6 @@ export default {
       },
       set (isShow) {
         this.setShowDeletingDialog(isShow)
-      }
-    },
-        textEditorPreviewMode: {
-      get () {
-        return this.$store.state.textEditorPreviewMode
-      },
-      set (mode) {
-        this.setTextEditorPreviewMode(mode)
       }
     },
   },
@@ -178,8 +150,6 @@ export default {
       'setShowLoading',
       'setShowSidebar',
       'setShowDeletingDialog',
-      'setLoginUser',
-      'setTextEditorPreviewMode',
     ]),
     preview: function() {
       return marked(this.memos[this.selectedIndex].markdown)
@@ -251,16 +221,11 @@ export default {
     onDeletingCancel: function() {
       this.setShowDeletingDialog(false)
     },
-    logout: function() {
-      firebase.auth().signOut();
-      this.$router.replace('/login', () => {
-        this.setShowSnackbar({
-          isShow: true,
-          text: 'Logged out'
-        })
-      });
-    },
   },
+  components: {
+    'Navigation1': Navigation1,
+    'Navigation2': Navigation2,
+  }
 }
 </script>
 
@@ -415,19 +380,7 @@ export default {
   }
 }
 
-@media (max-width: 586px) {
-  .md-app-toolbar {
-
-    .md-title {
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .user-info {
-      font-size: 12px;
-    }
-    button {
-      font-size: 12px;
-    }
-  }
+.md-app-toolbar {
+  display: flex;
 }
 </style>
