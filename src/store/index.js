@@ -12,6 +12,7 @@ export default new Vuex.Store({
     showLoading: false,
     loginUser: null,
     textEditorPreviewMode: 'tab-editor-and-preview',
+    nowSaving: false,
   },
   actions: {
     setShowSnackbar ({ commit }, { isShow, text}) {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     setLoginUser({ commit }, loginUser) {
       commit( 'setLoginUser' , { loginUser })
+    },
+    setNowSaving({ commit }, nowSaving) {
+      commit( 'setNowSaving', { nowSaving })
     },
   },
   mutations: {
@@ -56,5 +60,8 @@ export default new Vuex.Store({
     setLoginUser (state, payload) {
       state.loginUser = payload.loginUser
     },
+    setNowSaving (state, payload) {
+      state.nowSaving = payload.nowSaving
+    }
   }
 })

@@ -42,8 +42,9 @@
         <i class="btn-icon fas fa-trash-alt"></i>
       </md-button>
 
-      <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos">
-        <i class="btn-icon fas fa-save"></i>
+      <md-button class="md-button md-fab md-raised md-primary save-button" @click="saveMemos" :disabled="nowSaving">
+        <i v-if="!nowSaving" class="btn-icon fas fa-save"></i>
+        <i v-if="nowSaving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
       </md-button>
 
       <md-dialog-confirm
@@ -78,6 +79,7 @@ export default {
   computed: {
     ...mapState([
       'loginUser',
+      'nowSaving',
     ]),
     showSidebar: {
       get() {
@@ -134,6 +136,7 @@ export default {
       'setShowLoading',
       'setShowSidebar',
       'setShowDeletingDialog',
+      'setNowSaving',
     ]),
     displayTitle: function(text) {
       // 最初の行をタイトルとす
@@ -157,24 +160,28 @@ export default {
       this.setShowDeletingDialog(true);
     },
     saveMemos: function() {
-      this.memos[this.selectedIndex].updated = new Date().toString();
+      if (this.nowSaving) return
+
+      this.setNowSaving(true)
+      this.memos[this.selectedIndex].updated = new Date().toString()
       firebase
         .database()
         .ref('memos/' + this.loginUser.uid)
         .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
-          m.tags = JSON.stringify(m.tags);
-          return m;
+          m.tags = JSON.stringify(m.tags)
+          return m
         }), error => {
+          this.setNowSaving(false)
+
           if(error) {
-            alert("Fial to save memos");
+            alert("Fial to save memos")
           } else {
             this.setShowSnackbar({
               isShow: true,
               text: 'Saved the memo'
-            });
+            })
           }
         });
-
     },
 
     onDeletingConfirm: function() {
