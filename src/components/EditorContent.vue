@@ -4,8 +4,8 @@
       <md-chips v-model="memo.tags" md-limit="5" md-placeholder="Add Tag..."></md-chips>
     </div>
     <div class="editor" v-bind:class="textEditorPreviewMode" @keyup.ctrl.83="saveMemo">
-      <textarea class="markdown" v-model="memo.markdown"></textarea>
-      <div class="preview markdown-body" v-html="preview()"></div>
+      <textarea v-scroll="onScroll" class="markdown" v-model="memo.markdown"></textarea>
+      <div id="preview" class="preview markdown-body" v-html="preview()"></div>
     </div>
 
     <div class="characters">Characters {{memo.markdown.length}}</div>
@@ -44,6 +44,13 @@ export default {
   },
 
   methods: {
+    onScroll:function($event, { scrollTop })　{
+      const scrollAreaHight = $event.srcElement.scrollHeight - $event.srcElement.clientHeight;
+      const ratio = ($event.srcElement.scrollTop / scrollAreaHight);
+
+      const target = this.$el.querySelector('#preview');
+      target.scrollTop = (target.scrollHeight - target.clientHeight) * ratio;
+  	},
     preview: function() {
       var html =  marked(this.memo.markdown)
       return this.renderCheckbox(html)
@@ -110,6 +117,7 @@ export default {
   }
 
   .markdown {
+    outline: 0;
     border-right: 0;
   }
   .preview {
