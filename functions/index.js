@@ -1,5 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const cors = require('cors')({origin: true});
+
 admin.initializeApp(functions.config().firebase)
 
 
@@ -13,18 +15,21 @@ exports.incrementUserCount = functions.auth.user().onCreate(event => {
   });
 });
 
-// ユーザ登録数を取得する
+// ユーザ登録数を取得する(クロスオリジン許可)
 exports.getUserCount = functions.https.onRequest((request, response) => {
-  const userCountRef = admin.database().ref('userCount')
-  userCountRef.on('value', function (snapshot) {
-    const count = snapshot.val() || 0;
+  cors(request, response, () => {
 
-    response.status(200).send(JSON.stringify({
-      count: count
-    }));
-  }, function(errorObject) {
-    response.status(500).send(JSON.stringify({
-      errorCode : errorObject.code
-    }));
+    const userCountRef = admin.database().ref('userCount')
+    userCountRef.on('value', function (snapshot) {
+      const count = snapshot.val() || 0;
+
+      response.status(200).send(JSON.stringify({
+        count: count
+      }));
+    }, function(errorObject) {
+      response.status(500).send(JSON.stringify({
+        errorCode : errorObject.code
+      }));
+    });
   });
 });
