@@ -8,6 +8,8 @@
       <div class="preview markdown-body" v-html="preview()"></div>
     </div>
 
+    <div class="characters">Characters {{memo.markdown.length}}</div>
+
     <div class="date-area">
       <div>Updated: {{memo.updated | dateFormat('YYYY/MM/DD HH:mm') }}</div>
       <div>Created: {{memo.created | dateFormat('YYYY/MM/DD HH:mm') }}</div>
@@ -116,6 +118,11 @@ export default {
     min-height: 500px;
     transition: width 0.5s;
   }
+}
+
+.characters {
+  color: gray;
+  display: flex;
 }
 
 
