@@ -100,23 +100,22 @@ export default {
     }
   }
 
-  .markdown {
-    outline: 0;
-    border: 0;
-    min-height: 500px;
-    border: 1px solid #d6d6d6;
-    border-right: 0;
+  .markdown,
+  .preview {
+    overflow: scroll;
+    height: 60vh;
     padding: 12px;
     transition: width 0.5s;
+    border: 1px solid #d6d6d6;
+  }
+
+  .markdown {
+    border-right: 0;
   }
   .preview {
     font-size: 0.7em;
     background-color: #fff;
     text-align: left;
-    border: 1px solid #d6d6d6;
-    padding: 12px;
-    min-height: 500px;
-    transition: width 0.5s;
   }
 }
 

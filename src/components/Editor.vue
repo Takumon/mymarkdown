@@ -1,6 +1,6 @@
 <template>
 
-  <md-app md-waterfall md-mode="fixed-last">
+  <md-app md-waterfall md-mode="fixed">
     <md-app-toolbar class="md-primary">
       <Navigation1></Navigation1>
       <Navigation2></Navigation2>
