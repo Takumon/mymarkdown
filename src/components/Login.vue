@@ -18,12 +18,16 @@
           class="md-raised md-primary"
           @click="loginWithGithub"><i class="btn-icon fab fa-github"></i> GitHub</md-button>
       </div>
+      <div class="user-count-area">
+        Now {{app.userCount}} users.
+      </div>
     </md-content>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import axios from 'axios';
 
 export default {
   name: 'Login',
@@ -32,8 +36,15 @@ export default {
       app: {
         title: 'Markdown Mome',
         discription: 'Online markdown memo',
-      }
+        userCount: null,
+      },
     };
+  },
+  created: function() {
+    axios.get('https://us-central1-mymarkdown-233ca.cloudfunctions.net/getUserCount')
+      .then(res => {
+        this.app.userCount = res.data.count;
+      });
   },
   // 認証失敗時の処理
   methods: {
@@ -119,6 +130,10 @@ export default {
       margin-right: 10px;
     }
   }
+}
+
+.user-count-area {
+  color: #7d7d7d;
 }
 
 @media (max-width: 586px) {
