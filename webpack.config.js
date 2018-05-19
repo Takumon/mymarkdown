@@ -97,7 +97,7 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: false,
+      sourceMap: true,
       compress: {
         warnings: false
       }
