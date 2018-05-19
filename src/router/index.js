@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '../store'
 import Router from 'vue-router'
 import Login from '../components/Login.vue';
 import Editor from '../components/Editor.vue';
@@ -26,14 +27,18 @@ router.beforeEach((to, from, next) => {
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   firebase.auth().onAuthStateChanged(user => {
-    if (requiresAuth && !user) {
-      return next({
+    if (user) {
+      store.dispatch('setLoginUser', user).then((() => {
+        next()
+      }))
+    } else if (requiresAuth) {
+      next({
         path: '/login',
         query: { redirect: to.fullPath }
       });
+    } else {
+      next()
     }
-
-    return next();
   });
 })
 
