@@ -7,7 +7,7 @@
       <span class="md-title">Markdown Mome</span>
     </div>
 
-    <div class="md-toolbar-section-end">
+    <div class="md-toolbar-section-end user-info-area">
       <div class="user-info"><i class="fas fa-user"></i> {{loginUser.displayName}}</div>
       <md-button
         @click="logout"><i class="btn-icon fas fa-sign-out-alt"></i> LOOUT</md-button>
@@ -64,6 +64,7 @@ export default {
 
   .user-info {
     line-height: 48px;
+    white-space: nowrap;
   }
 }
 

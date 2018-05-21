@@ -10,12 +10,14 @@ import {
   color,
   boolean,
   select,
+  object,
 } from '@storybook/addon-knobs'
 import Centered from '@storybook/addon-centered'
 
 import store from '../store'
 
 
+import Navigation1 from '../components/Navigation1.vue'
 import Navigation2 from '../components/Navigation2.vue'
 import Snackbar from '../components/Snackbar.vue'
 
@@ -52,6 +54,48 @@ storiesOf('Snackbar', module)
       })
     }
   });
+
+
+
+storiesOf('Navigation1', module)
+  .addDecorator(Centered)
+  .addDecorator(withKnobs)
+  .add('with some Addons', () => {
+    const _isShow = boolean('isShow', false);
+    const _loginUser = object('loginUser', {
+      displayName: 'SampleUserName'
+    });
+
+    return {
+      components: { Navigation1 },
+      template: `
+        <Navigation1></Navigation1>
+      `,
+      store: new Vuex.Store({
+        state: {
+          showSidebar: _isShow,
+          loginUser: _loginUser,
+        },
+        actions: {
+          setShowSidebar ({ commit }, isShow ) {
+            commit( 'setShowSidebar', { isShow })
+          },
+          setLoginUser({ commit }, loginUser) {
+            commit( 'setLoginUser' , { loginUser })
+          },
+        },
+        mutations: {
+          setShowSidebar (state, payload) {
+            state.showSidebar = payload.isShow
+          },
+          setLoginUser (state, payload) {
+            state.loginUser = payload.loginUser
+          },
+        }
+      })
+    }
+  });
+
 
 
 storiesOf('Navigation2', module)
