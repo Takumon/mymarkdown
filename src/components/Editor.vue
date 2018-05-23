@@ -2,13 +2,13 @@
 
   <md-app md-waterfall md-mode="fixed">
     <md-app-toolbar class="md-primary">
-      <Navigation1></Navigation1>
-      <Navigation2></Navigation2>
+      <Navigation1 />
+      <Navigation2 />
     </md-app-toolbar>
 
 
     <md-app-drawer md-permanent="full" :md-active.sync="showSidebar">
-      <Sidebar></Sidebar>
+      <Sidebar />
     </md-app-drawer>
 
     <md-app-content>
@@ -27,14 +27,7 @@
         <i v-if="nowSaving" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
       </md-button>
 
-      <md-dialog-confirm
-          :md-active.sync="showDeletingDialog"
-          md-title="Delete the memo?"
-          md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
-          md-confirm-text="Delete"
-          md-cancel-text="Cancel"
-          @md-cancel="onDeletingCancel"
-          @md-confirm="onDeletingConfirm" />
+      <DeleteDialog />
     </md-app-content>
   </md-app>
 
@@ -43,6 +36,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import Sidebar from './Sidebar.vue'
+import DeleteDialog from './DeleteDialog.vue'
 import Navigation1 from './Navigation1.vue'
 import Navigation2 from './Navigation2.vue'
 import EditorContent from './EditorContent.vue'
@@ -153,36 +147,13 @@ export default {
           }
         });
     },
-
-    onDeletingConfirm: function() {
-      this.deleteMemo(this.selectedMemoIndex)
-
-      firebase
-        .database()
-        .ref('memos/' + this.loginUser.uid)
-        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
-          m.tags = JSON.stringify(m.tags);
-          return m;
-        }), error => {
-          if(error) {
-            alert("Fial to delete memo");
-          } else {
-            this.setShowSnackbar({
-              isShow: true,
-              text: 'Deleted the memo'
-            });
-          }
-        });
-    },
-    onDeletingCancel: function() {
-      this.setShowDeletingDialog(false)
-    },
   },
   components: {
     'Sidebar': Sidebar,
     'Navigation1': Navigation1,
     'Navigation2': Navigation2,
     'EditorContent': EditorContent,
+    'DeleteDialog': DeleteDialog,
   }
 }
 </script>
