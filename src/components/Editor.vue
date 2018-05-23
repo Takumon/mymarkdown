@@ -136,6 +136,8 @@ export default {
   methods: {
     ...mapActions([
       'setMemos',
+      'addMemo',
+      'deleteMemo',
       'updateMemoUpdated',
       'setShowSnackbar',
       'setShowLoading',

@@ -54,7 +54,7 @@ export default new Vuex.Store({
     setMemos (state, payload) {
       state.memos = payload.memos
     },
-    addMemos (state, payload) {
+    addMemo (state, payload) {
       const sysdate = new Date().toString()
       payload.memo.markdown = payload.memo.markdown || '無題のメモ'
       payload.memo.tags = payload.memo.tags || []
