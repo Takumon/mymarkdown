@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     memos: [],
+    selectedMemoIndex: 0,
     showSnackbar: false,
     snackbarText: '',
     showDeletingDialog: false,
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     },
     deleteMemo( { commit }, index) {
       commit('deleteMemo', { index })
+    },
+    setSelectedMemoIndex( { commit }, selectedMemoIndex) {
+      commit( 'setSelectedMemoIndex', { selectedMemoIndex })
     },
     setShowSnackbar ({ commit }, { isShow, text}) {
       commit( 'setShowSnackbar', { isShow, text })
@@ -64,10 +68,17 @@ export default new Vuex.Store({
       state.memos.push(payload.memo)
     },
     deleteMemo(state, payload) {
+      if (state.selectedMemoIndex > 0) {
+        state.selectedMemoIndex--
+      }
+
       state.memos.splice(payload.index, 1)
     },
     updateMemoUpdated(state, payload) {
       state.memos[payload.index].updated = new Date().toString()
+    },
+    setSelectedMemoIndex(state, payload) {
+      state.selectedMemoIndex = payload.selectedMemoIndex
     },
     setShowSnackbar (state, payload) {
       state.showSnackbar = payload.isShow

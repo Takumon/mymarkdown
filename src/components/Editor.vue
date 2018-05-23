@@ -17,7 +17,7 @@
           v-for="(memo, index) in memos"
           :key="index"
           @click="selectMemo(index)"
-          :data-selected="index==selectedIndex" >
+          :data-selected="index==selectedMemoIndex" >
           <p class="memo-title">{{displayTitle(memo.markdown)}}</p>
         </md-list-item>
       </md-list>
@@ -33,8 +33,8 @@
 
     <md-app-content>
       <EditorContent
-        v-if="memos[selectedIndex]"
-        :memo="memos[selectedIndex]"
+        v-if="memos[selectedMemoIndex]"
+        :memo="memos[selectedMemoIndex]"
         @saveMemo="saveMemos"
         ></EditorContent>
 
@@ -71,13 +71,13 @@ export default {
   name: 'Editor',
   data () {
     return {
-      selectedIndex: 0,
       intervalId: null,
     }
   },
   computed: {
     ...mapState([
       'memos',
+      'selectedMemoIndex',
       'loginUser',
       'nowSaving',
     ]),
@@ -138,6 +138,7 @@ export default {
       'setMemos',
       'addMemo',
       'deleteMemo',
+      'setSelectedMemoIndex',
       'updateMemoUpdated',
       'setShowSnackbar',
       'setShowLoading',
@@ -150,9 +151,10 @@ export default {
       return text.split(/\n/)[0];
     },
     selectMemo: function(index) {
-      this.saveMemos();
-      this.selectedIndex = index;
-      this.setShowSidebar(false);
+      // 表示するメモを変更する前に、現在選択中のメモの更新日を更新してDBに保存する
+      this.saveMemos()
+      this.setSelectedMemoIndex(index)
+      .then(() => this.setShowSidebar(false))
     },
     saveMemos: function() {
       // 保存中の場合は、無駄に処理を走らせないため中断
@@ -160,7 +162,7 @@ export default {
 
       this.setNowSaving(true)
 
-      this.updateMemoUpdated(this.selectedIndex)
+      this.updateMemoUpdated(this.selectedMemoIndex)
 
       firebase
         .database()
@@ -183,11 +185,8 @@ export default {
     },
 
     onDeletingConfirm: function() {
-      this.deleteMemo(this.selectedIndex)
+      this.deleteMemo(this.selectedMemoIndex)
 
-      if (this.selectedIndex > 0) {
-        this.selectedIndex--;
-      }
       firebase
         .database()
         .ref('memos/' + this.loginUser.uid)
