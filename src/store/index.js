@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    memos: [],
     showSnackbar: false,
     snackbarText: '',
     showDeletingDialog: false,
@@ -15,6 +16,18 @@ export default new Vuex.Store({
     nowSaving: false,
   },
   actions: {
+    setMemos ( { commit}, memos) {
+      commit('setMemos', { memos })
+    },
+    addMemo ( { commit }, memo = {}) {
+      commit('addMemo', { memo })
+    },
+    updateMemoUpdated( { commit }, index) {
+      commit('updateMemoUpdated', { index })
+    },
+    deleteMemo( { commit }, index) {
+      commit('deleteMemo', { index })
+    },
     setShowSnackbar ({ commit }, { isShow, text}) {
       commit( 'setShowSnackbar', { isShow, text })
     },
@@ -38,6 +51,24 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    setMemos (state, payload) {
+      state.memos = payload.memos
+    },
+    addMemos (state, payload) {
+      const sysdate = new Date().toString()
+      payload.memo.markdown = payload.memo.markdown || '無題のメモ'
+      payload.memo.tags = payload.memo.tags || []
+      payload.memo.created = payload.memo.created || sysdate
+      payload.memo.updated = payload.memo.updated || sysdate
+
+      state.memos.push(payload.memo)
+    },
+    deleteMemo(state, payload) {
+      state.memos.splice(payload.index, 1)
+    },
+    updateMemoUpdated(state, payload) {
+      state.memos[payload.index].updated = new Date().toString()
+    },
     setShowSnackbar (state, payload) {
       state.showSnackbar = payload.isShow
       // textを指定してる時のみ更新

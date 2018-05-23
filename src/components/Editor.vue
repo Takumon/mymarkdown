@@ -71,13 +71,13 @@ export default {
   name: 'Editor',
   data () {
     return {
-      memos: [],
       selectedIndex: 0,
       intervalId: null,
     }
   },
   computed: {
     ...mapState([
+      'memos',
       'loginUser',
       'nowSaving',
     ]),
@@ -107,11 +107,14 @@ export default {
       .once('value')
       .then(result => {
         if (result.val()) {
-          this.memos = result.val().map(m => {
+          const memos = result.val().map(m => {
             m.tags = JSON.parse(m.tags);
             return m;
           });
+          this.setMemos(memos)
         } else {
+          // メモが１件もないことを想定していないので
+          // 初期登録時はデフォルトで１件追加する
           this.addMemo()
         }
         this.setShowLoading(false)
@@ -132,6 +135,8 @@ export default {
 
   methods: {
     ...mapActions([
+      'setMemos',
+      'updateMemoUpdated',
       'setShowSnackbar',
       'setShowLoading',
       'setShowSidebar',
@@ -142,28 +147,19 @@ export default {
       // 最初の行をタイトルとす
       return text.split(/\n/)[0];
     },
-    addMemo: function() {
-      const sysdate = new Date().toString();
-      this.memos.push({
-        markdown: '無題のメモ',
-        tags: [],
-        updated: sysdate,
-        created: sysdate,
-      })
-    },
     selectMemo: function(index) {
       this.saveMemos();
       this.selectedIndex = index;
       this.setShowSidebar(false);
     },
-    deleteMemo: function() {
-      this.setShowDeletingDialog(true);
-    },
     saveMemos: function() {
+      // 保存中の場合は、無駄に処理を走らせないため中断
       if (this.nowSaving) return
 
       this.setNowSaving(true)
-      this.memos[this.selectedIndex].updated = new Date().toString()
+
+      this.updateMemoUpdated(this.selectedIndex)
+
       firebase
         .database()
         .ref('memos/' + this.loginUser.uid)
@@ -185,7 +181,8 @@ export default {
     },
 
     onDeletingConfirm: function() {
-      this.memos.splice(this.selectedIndex, 1)
+      this.deleteMemo(this.selectedIndex)
+
       if (this.selectedIndex > 0) {
         this.selectedIndex--;
       }
