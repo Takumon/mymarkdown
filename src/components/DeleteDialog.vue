@@ -7,7 +7,6 @@
       md-cancel-text="Cancel"
       @md-cancel="onDeletingCancel"
       @md-confirm="deleteMemo" />
-  </md-app-content>
 </template>
 
 <script>
