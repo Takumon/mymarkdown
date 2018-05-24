@@ -52,7 +52,7 @@ export default {
     selectMemo: function(index) {
       // 表示するメモを変更する前に、現在選択中のメモの更新日を更新してDBに保存する
       this.saveMemos()
-      this.setSelectedMemoIndex(index)
+      .then(() => this.setSelectedMemoIndex(index))
       .then(() => this.setShowSidebar(false))
     },
   },
