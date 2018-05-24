@@ -40,10 +40,12 @@ import DeleteDialog from './DeleteDialog.vue'
 import Navigation1 from './Navigation1.vue'
 import Navigation2 from './Navigation2.vue'
 import EditorContent from './EditorContent.vue'
+import MemoController from './common/MemoController.vue';
 
 
 export default {
   name: 'Editor',
+  mixins: [ MemoController ],
   data () {
     return {
       intervalId: null,
@@ -51,10 +53,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'memos',
       'selectedMemoIndex',
-      'loginUser',
-      'nowSaving',
     ]),
     showSidebar: {
       get() {
@@ -74,26 +73,7 @@ export default {
     },
   },
   created: function() {
-    this.setShowLoading(true)
-
-    firebase
-      .database()
-      .ref('memos/' + this.loginUser.uid)
-      .once('value')
-      .then(result => {
-        if (result.val()) {
-          const memos = result.val().map(m => {
-            m.tags = JSON.parse(m.tags);
-            return m;
-          });
-          this.setMemos(memos)
-        } else {
-          // メモが１件もないことを想定していないので
-          // 初期登録時はデフォルトで１件追加する
-          this.addMemo()
-        }
-        this.setShowLoading(false)
-      })
+    this.getMemosFromDBAndSetStore()
   },
 
   // 定期的にメモを保存
@@ -110,43 +90,10 @@ export default {
 
   methods: {
     ...mapActions([
-      'setMemos',
-      'deleteMemo',
       'setSelectedMemoIndex',
-      'updateMemoUpdated',
-      'setShowSnackbar',
-      'setShowLoading',
       'setShowSidebar',
       'setShowDeletingDialog',
-      'setNowSaving',
     ]),
-    saveMemos: function() {
-      // 保存中の場合は、無駄に処理を走らせないため中断
-      if (this.nowSaving) return
-
-      this.setNowSaving(true)
-
-      this.updateMemoUpdated(this.selectedMemoIndex)
-
-      firebase
-        .database()
-        .ref('memos/' + this.loginUser.uid)
-        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
-          m.tags = JSON.stringify(m.tags)
-          return m
-        }), error => {
-          this.setNowSaving(false)
-
-          if(error) {
-            alert("Fial to save memos")
-          } else {
-            this.setShowSnackbar({
-              isShow: true,
-              text: 'Saved the memo'
-            })
-          }
-        });
-    },
   },
   components: {
     'Sidebar': Sidebar,

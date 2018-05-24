@@ -27,29 +27,23 @@
 import { mapState, mapActions } from 'vuex'
 import Navigation1 from './Navigation1.vue'
 import Navigation2 from './Navigation2.vue'
-import EditorContent from './EditorContent.vue'
+import MemoController from './common/MemoController.vue';
 
 
 export default {
   name: 'Sidebar',
+  mixins: [ MemoController ],
   computed: {
     ...mapState([
       'memos',
       'selectedMemoIndex',
-      'loginUser',
-      'nowSaving',
     ]),
   },
 
   methods: {
     ...mapActions([
-      'addMemo',
-      'saveMemos',
-      'setNowSaving',
-      'updateMemoUpdated',
       'setSelectedMemoIndex',
       'setShowSidebar',
-      'setShowSnackbar',
     ]),
     displayTitle: function(text) {
       // 最初の行をタイトルとす
@@ -61,34 +55,6 @@ export default {
       this.setSelectedMemoIndex(index)
       .then(() => this.setShowSidebar(false))
     },
-    saveMemos: function() {
-      // 保存中の場合は、無駄に処理を走らせないため中断
-      if (this.nowSaving) return
-
-      this.setNowSaving(true)
-
-      this.updateMemoUpdated(this.selectedMemoIndex)
-
-      firebase
-        .database()
-        .ref('memos/' + this.loginUser.uid)
-        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
-          m.tags = JSON.stringify(m.tags)
-          return m
-        }), error => {
-          this.setNowSaving(false)
-
-          if(error) {
-            alert("Fial to save memos")
-          } else {
-            this.setShowSnackbar({
-              isShow: true,
-              text: 'Saved the memo'
-            })
-          }
-        });
-    },
-
   },
 }
 </script>

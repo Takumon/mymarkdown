@@ -6,22 +6,21 @@
       md-confirm-text="Delete"
       md-cancel-text="Cancel"
       @md-cancel="onDeletingCancel"
-      @md-confirm="onDeletingConfirm" />
+      @md-confirm="deleteMemo" />
   </md-app-content>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import MemoController from './common/MemoController.vue';
 
 
 export default {
   name: 'DeleteDialog',
+  mixins: [ MemoController ],
   computed: {
     ...mapState([
-      'memos',
       'selectedMemoIndex',
-      'loginUser',
-      'nowSaving',
     ]),
     showDeletingDialog: {
       get () {
@@ -34,32 +33,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'deleteMemo',
-      'setShowSnackbar',
-      'setNowSaving',
       'setShowDeletingDialog',
     ]),
-
-    onDeletingConfirm: function() {
-      this.deleteMemo(this.selectedMemoIndex)
-
-      firebase
-        .database()
-        .ref('memos/' + this.loginUser.uid)
-        .set(JSON.parse(JSON.stringify(this.memos)).map(m => { // memosをディープコピーして加工してからDBに保存
-          m.tags = JSON.stringify(m.tags);
-          return m;
-        }), error => {
-          if(error) {
-            alert("Fial to delete memo");
-          } else {
-            this.setShowSnackbar({
-              isShow: true,
-              text: 'Deleted the memo'
-            });
-          }
-        });
-    },
   },
 }
 </script>
