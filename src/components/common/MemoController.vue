@@ -57,7 +57,7 @@ export default {
       this.store_setNowSaving(true)
 
       this.store_updateMemoUpdated(this.selectedMemoIndex)
-      return this.saveMemosToDB({
+      return this.$_memoController_saveMemosToDB({
         successMsg: 'Saved the memo',
         errorMsg: 'Fial to save memos'
       })
@@ -66,7 +66,7 @@ export default {
     // ストアの選択中Memoを削除して、DB保存
     deleteMemo: function() {
       this.store_deleteMemo(this.selectedMemoIndex)
-      return this.saveMemosToDB({
+      return this.$_memoController_saveMemosToDB({
         successMsg: 'Deleted the memo',
         errorMsg: 'Fial to delete memo'
       })

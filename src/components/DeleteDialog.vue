@@ -5,7 +5,6 @@
       md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
       md-confirm-text="Delete"
       md-cancel-text="Cancel"
-      @md-cancel="onDeletingCancel"
       @md-confirm="deleteMemo" />
 </template>
 
