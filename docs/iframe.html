@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <base target="_parent">
+    <script>
+        if (window.parent !== window) {
+            try {
+                window.__VUE_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+                window.parent.__VUE_DEVTOOLS_CONTEXT__ = window.document;
+            } catch (error) {
+                // The above line can throw if we do not have access to the parent frame -- i.e. cross origin
+            }
+        }
+    </script>
+    <title>Storybook</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/solarized_light.min.css">
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAY88eDIcBJHxzXw-VnsnpTub-uoVvH2b4",
+    authDomain: "mymarkdown-233ca.firebaseapp.com",
+    databaseURL: "https://mymarkdown-233ca.firebaseio.com",
+    projectId: "mymarkdown-233ca",
+    storageBucket: "",
+    messagingSenderId: "360435751539"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<style>
+.md-app {
+  height: 100vh;
+  width: 100vw;
+}
+</style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="error-display"></div>
+<script type="text/javascript" src="static/preview.59057bb5ce0a8fafb540.bundle.js"></script></body>
+
+</html>
