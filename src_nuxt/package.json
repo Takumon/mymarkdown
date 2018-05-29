@@ -1,5 +1,5 @@
 {
-  "name": "Markdown Memo",
+  "name": "MarkdownMemo",
   "version": "1.0.0",
   "description": "Markdown Online Editor",
   "author": "takumon <inouetakumon@gmail.com>",
@@ -13,7 +13,8 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.0.0",
+    "vue-material": "^1.0.0-beta-10.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

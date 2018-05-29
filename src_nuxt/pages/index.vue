@@ -8,6 +8,7 @@
       <h2 class="subtitle">
         Online markdown memo
       </h2>
+      <md-button class="md-raised md-primary" @click="increment()">{{ count }}</md-button>
       <div class="links">
         <a
           href="https://nuxtjs.org/"
@@ -28,7 +29,18 @@ import AppLogo from '~/components/AppLogo.vue'
 export default {
   components: {
     AppLogo
+  },
+  data() {
+    return {
+      count: 0
+    }
+  },
+  methods: {
+    increment() {
+      this.count++
+    }
   }
+
 }
 </script>
 
