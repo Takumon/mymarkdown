@@ -15,6 +15,10 @@ module.exports = {
         rel: 'stylesheet',
         href: '//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons',
       },
+      {
+        rel: 'stylesheet',
+        href: 'https://use.fontawesome.com/releases/v5.0.6/css/all.css'
+      },
     ]
   },
   /*

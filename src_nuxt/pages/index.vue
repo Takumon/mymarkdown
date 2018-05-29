@@ -9,6 +9,9 @@
         Online markdown memo
       </h2>
       <md-button class="md-raised md-primary" @click="increment()">{{ count }}</md-button>
+      <div>
+        <i class="fab fa-apple"></i>
+      </div>
       <div class="links">
         <a
           href="https://nuxtjs.org/"
