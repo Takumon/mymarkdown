@@ -23,6 +23,7 @@ module.exports = {
   loading: { color: '#3B8070' },
   plugins: [
     '~/plugins/vue-material',
+    '~/plugins/vue-scroll',
   ],
 
   /*
