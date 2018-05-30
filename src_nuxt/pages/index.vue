@@ -5,10 +5,15 @@
       <h1 class="title">
         Markdown Mome
       </h1>
+      <md-button class="md-raised md-primary" @click="increment()">{{ selectedMemoIndex }}</md-button>
+
       <h2 class="subtitle">
         Online markdown memo
       </h2>
-      <md-button class="md-raised md-primary" @click="increment()">{{ selectedMemoIndex }}</md-button>
+      <md-button class="md-raised md-primary" @click="setShowSnackbar({
+            isShow: true,
+            text: 'Sample Message'
+        })">{{ selectedMemoIndex }}</md-button>
       <div>
         <i class="fab fa-apple"></i>
       </div>
@@ -39,6 +44,7 @@
         <textarea v-model="markdownText"></textarea>
         <div class="preview markdown-body" v-html="preview()"></div>
       </div>
+
     </div>
   </section>
 </template>
@@ -79,7 +85,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setSelectedMemoIndex'
+      'setSelectedMemoIndex',
+      'setShowSnackbar',
     ]),
     increment() {
       this.setSelectedMemoIndex(this.selectedMemoIndex + 1)
