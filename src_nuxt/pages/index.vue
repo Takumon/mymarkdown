@@ -35,12 +35,19 @@
         <p>0.81</p><p>0.82</p><p>0.83</p><p>0.84</p><p>0.85</p><p>0.86</p><p>0.87</p><p>0.88</p><p>0.89</p><p>0.90</p>
         <p>0.91</p><p>0.92</p><p>0.93</p><p>0.94</p><p>0.95</p><p>0.96</p><p>0.97</p><p>0.98</p><p>0.99</p><p>1.00</p>
       </div>
+      <div>
+        <textarea v-model="markdownText"></textarea>
+        <div class="preview markdown-body" v-html="preview()"></div>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import AppLogo from '~/components/AppLogo.vue'
+import marked from 'marked';
+import hljs from 'highlightjs';
+
 
 export default {
   components: {
@@ -49,8 +56,20 @@ export default {
   data() {
     return {
       count: 0,
-      scrollRatio: 0
+      scrollRatio: 0,
+      markdownText: '',
     }
+  },
+  created: function() {
+    marked.setOptions({
+      gfm: true,
+      breaks: true,
+      langPrefix: '',
+      highlight: function (code, langAndTitle, callback) {
+        const lang = langAndTitle ? langAndTitle.split(':')[0] : '';
+        return hljs.highlightAuto(code, [lang]).value;
+      }
+    });
   },
   methods: {
     increment() {
@@ -59,7 +78,10 @@ export default {
     onScroll:function($event, { scrollTop })　{
       const scrollAreaHight = $event.srcElement.scrollHeight - $event.srcElement.clientHeight
       this.scrollRatio = ($event.srcElement.scrollTop / scrollAreaHight)
-  	},
+    },
+    preview: function() {
+      return  marked(this.markdownText)
+    },
   }
 
 }

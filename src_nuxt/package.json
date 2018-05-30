@@ -13,6 +13,8 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "highlightjs": "^9.10.0",
+    "marked": "^0.4.0",
     "nuxt": "^1.0.0",
     "vue-material": "^1.0.0-beta-10.2",
     "vue-scroll": "^2.1.7"

@@ -11,14 +11,11 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        rel: 'stylesheet',
-        href: '//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons',
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://use.fontawesome.com/releases/v5.0.6/css/all.css'
-      },
+      { rel: 'stylesheet',　href: '//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons'　},
+      { rel: 'stylesheet',　href: 'https://use.fontawesome.com/releases/v5.0.6/css/all.css'},
+      { rel: 'stylesheet',　href: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/solarized_light.min.css'},
+      { rel: 'stylesheet',　href: 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css'},
+
     ]
   },
   /*
