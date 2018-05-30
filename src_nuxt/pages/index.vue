@@ -8,7 +8,7 @@
       <h2 class="subtitle">
         Online markdown memo
       </h2>
-      <md-button class="md-raised md-primary" @click="increment()">{{ count }}</md-button>
+      <md-button class="md-raised md-primary" @click="increment()">{{ selectedMemoIndex }}</md-button>
       <div>
         <i class="fab fa-apple"></i>
       </div>
@@ -47,6 +47,7 @@
 import AppLogo from '~/components/AppLogo.vue'
 import marked from 'marked';
 import hljs from 'highlightjs';
+import { mapState, mapActions } from 'vuex';
 
 
 export default {
@@ -71,9 +72,17 @@ export default {
       }
     });
   },
+  computed: {
+    ...mapState([
+      'selectedMemoIndex'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'setSelectedMemoIndex'
+    ]),
     increment() {
-      this.count++
+      this.setSelectedMemoIndex(this.selectedMemoIndex + 1)
     },
     onScroll:function($event, { scrollTop })　{
       const scrollAreaHight = $event.srcElement.scrollHeight - $event.srcElement.clientHeight
