@@ -10,10 +10,11 @@
       <h2 class="subtitle">
         Online markdown memo
       </h2>
+      <md-button class="md-raised md-primary" @click="loading()">Show loading</md-button>
       <md-button class="md-raised md-primary" @click="setShowSnackbar({
             isShow: true,
             text: 'Sample Message'
-        })">{{ selectedMemoIndex }}</md-button>
+        })">Show Snackbar</md-button>
       <div>
         <i class="fab fa-apple"></i>
       </div>
@@ -87,7 +88,14 @@ export default {
     ...mapActions([
       'setSelectedMemoIndex',
       'setShowSnackbar',
+      'setShowLoading',
     ]),
+    loading() {
+      this.setShowLoading(true)
+      setTimeout(() => {
+        this.setShowLoading(false)
+      }, 1000)
+    },
     increment() {
       this.setSelectedMemoIndex(this.selectedMemoIndex + 1)
     },
