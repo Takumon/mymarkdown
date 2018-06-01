@@ -10,6 +10,7 @@
       <h2 class="subtitle">
         Online markdown memo
       </h2>
+
       <md-button class="md-raised md-primary" @click="loading()">Show loading</md-button>
       <md-button class="md-raised md-primary" @click="setShowSnackbar({
             isShow: true,

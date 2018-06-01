@@ -1,4 +1,12 @@
 module.exports = {
+  env: {
+    APIKEY: 'AIzaSyAY88eDIcBJHxzXw-VnsnpTub-uoVvH2b4',
+    AUTHDOMAIN: 'mymarkdown-233ca.firebaseapp.com',
+    DATABASEURL: 'https://mymarkdown-233ca.firebaseio.com',
+    PROJECTID: 'mymarkdown-233ca',
+    STORAGEBUCKET: '',
+    MESSAGINGSENDERID: '360435751539',
+  },
   /*
   ** Headers of the page
   */
@@ -8,6 +16,9 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+    ],
+    script: [
+      { src: 'https://www.gstatic.com/firebasejs/4.13.0/firebase.js' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -33,6 +44,7 @@ module.exports = {
   build: {
     vendor: [
       'vue-material/dist/components',
+      'axios',
     ],
     /*
     ** Run ESLint on save
