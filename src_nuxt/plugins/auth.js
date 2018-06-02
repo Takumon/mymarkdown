@@ -9,6 +9,12 @@ export function auth () {
   })
 }
 
+export function signOut() {
+  return firebase.auth().signOut()
+}
+
+
+
 export function loginWith(provider) {
   return firebase.auth().signInWithPopup(provider)
 }
