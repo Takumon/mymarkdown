@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'spa',
   env: {
     APIKEY: 'AIzaSyAY88eDIcBJHxzXw-VnsnpTub-uoVvH2b4',
     AUTHDOMAIN: 'mymarkdown-233ca.firebaseapp.com',
