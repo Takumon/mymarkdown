@@ -17,6 +17,8 @@
 
 <script>
 import { mapState , mapActions } from 'vuex'
+import { signOut } from '~/plugins/auth'
+
 
 export default {
   name: 'Navigation1',
@@ -39,13 +41,14 @@ export default {
       'setShowSnackbar',
     ]),
     logout: function() {
-      firebase.auth().signOut();
-      this.$router.replace('/login', () => {
-        this.setShowSnackbar({
-          isShow: true,
-          text: 'Logged out'
-        })
-      });
+      signOut().then(() => {
+        this.$router.replace('/login', () => {
+          this.setShowSnackbar({
+            isShow: true,
+            text: 'Logged out'
+          })
+        });
+      })
     },
   },
 }

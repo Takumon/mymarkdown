@@ -1,9 +1,6 @@
-import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+const store = () => new Vuex.Store({
   state: {
     memos: [],
     selectedMemoIndex: 0,
@@ -18,40 +15,76 @@ export default new Vuex.Store({
   },
   actions: {
     setMemos ( { commit}, memos) {
-      commit('setMemos', { memos })
+      return new Promise((resolve, reject) => {
+        commit('setMemos', { memos })
+        resolve()
+      })
     },
     addMemo ( { commit }, memo = {}) {
-      commit('addMemo', { memo })
+      return new Promise((resolve, reject) => {
+        commit('addMemo', { memo })
+        resolve()
+      })
     },
     updateMemoUpdated( { commit }, index) {
-      commit('updateMemoUpdated', { index })
+      return new Promise((resolve, reject) => {
+        commit('updateMemoUpdated', { index })
+        resolve()
+      })
     },
     deleteMemo( { commit }, index) {
-      commit('deleteMemo', { index })
+      return new Promise((resolve, reject) => {
+        commit('deleteMemo', { index })
+        resolve()
+      })
     },
     setSelectedMemoIndex( { commit }, selectedMemoIndex) {
-      commit( 'setSelectedMemoIndex', { selectedMemoIndex })
+      return new Promise((resolve, reject) => {
+        commit( 'setSelectedMemoIndex', { selectedMemoIndex })
+        resolve()
+      })
     },
     setShowSnackbar ({ commit }, { isShow, text}) {
-      commit( 'setShowSnackbar', { isShow, text })
+      return new Promise((resolve, reject) => {
+        commit( 'setShowSnackbar', { isShow, text })
+        resolve()
+      })
     },
     setShowDeletingDialog ( { commit }, isShow) {
-      commit( 'setShowDeletingDialog', { isShow })
+      return new Promise((resolve, reject) => {
+        commit( 'setShowDeletingDialog', { isShow })
+        resolve()
+      })
     },
     setShowSidebar ({ commit }, isShow ) {
-      commit( 'setShowSidebar', { isShow })
+      return new Promise((resolve, reject) => {
+        commit( 'setShowSidebar', { isShow })
+        resolve()
+      })
     },
     setShowLoading ({ commit }, isShow) {
-      commit( 'setShowLoading', { isShow })
+      return new Promise((resolve, reject) => {
+        commit( 'setShowLoading', { isShow })
+        resolve()
+      })
     },
     setTextEditorPreviewMode ({ commit }, mode) {
-      commit( 'setTextEditorPreviewMode', { mode } )
+      return new Promise((resolve, reject) => {
+        commit( 'setTextEditorPreviewMode', { mode } )
+        resolve()
+      })
     },
     setLoginUser({ commit }, loginUser) {
-      commit( 'setLoginUser' , { loginUser })
+      return new Promise((resolve, reject) => {
+        commit( 'setLoginUser' , { loginUser })
+        resolve()
+      })
     },
     setNowSaving({ commit }, nowSaving) {
-      commit( 'setNowSaving', { nowSaving })
+      return new Promise((resolve, reject) => {
+        commit( 'setNowSaving', { nowSaving })
+        resolve()
+      })
     },
   },
   mutations: {
@@ -107,3 +140,6 @@ export default new Vuex.Store({
     }
   }
 })
+
+
+export default store

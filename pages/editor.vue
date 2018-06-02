@@ -1,6 +1,6 @@
 <template>
 
-  <md-app md-waterfall md-mode="fixed">
+  <md-app v-if="!showLoading" md-waterfall md-mode="fixed">
     <md-app-toolbar class="md-primary">
       <Navigation1 />
       <Navigation2 />
@@ -35,16 +35,16 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import Sidebar from './Sidebar.vue'
-import DeleteDialog from './DeleteDialog.vue'
-import Navigation1 from './Navigation1.vue'
-import Navigation2 from './Navigation2.vue'
-import EditorContent from './EditorContent.vue'
-import MemoController from './common/MemoController.vue';
+import Sidebar from '~/components/Sidebar.vue'
+import DeleteDialog from '~/components/DeleteDialog.vue'
+import Navigation1 from '~/components/Navigation1.vue'
+import Navigation2 from '~/components/Navigation2.vue'
+import EditorContent from '~/components/EditorContent.vue'
+import MemoController from '~/components/common/MemoController.vue';
 
 
 export default {
-  name: 'Editor',
+  name: 'editor',
   mixins: [ MemoController ],
   data () {
     return {
@@ -54,6 +54,7 @@ export default {
   computed: {
     ...mapState([
       'selectedMemoIndex',
+      'showLoading',
     ]),
     showSidebar: {
       get() {
@@ -72,7 +73,7 @@ export default {
       }
     },
   },
-  created: function() {
+  created () {
     this.getMemosFromDBAndSetStore()
   },
 
@@ -86,7 +87,6 @@ export default {
   beforeDestroy () {
     clearInterval(this.intervalId)
   },
-
 
   methods: {
     ...mapActions([

@@ -10,7 +10,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import MemoController from './common/MemoController.vue';
+import MemoController from '~/components/common/MemoController.vue';
 
 
 export default {

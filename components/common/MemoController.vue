@@ -1,5 +1,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
+import firebase from '~/plugins/firebase'
 
 
 // Memoを保存更新削除するための共通コンポーネント
@@ -106,7 +107,7 @@ export default {
 
     // ストアのメモをDBに保存
     $_memoController_saveMemosToDB_core: function() {
-      return new Promise(function(resolve, reject){
+      return new Promise((resolve, reject) => {
         firebase
           .database()
           .ref('memos/' + this.loginUser.uid)

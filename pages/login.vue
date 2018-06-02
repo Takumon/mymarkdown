@@ -7,16 +7,16 @@
       <div class="login-button-area">
         <md-button
           class="md-raised md-primary"
-          @click="loginWithGoogle"><i class="btn-icon fab fa-google"></i> Google</md-button>
+          @click="login(LOGIN_PROVIDER.google)"><i class="btn-icon fab fa-google"></i> Google</md-button>
         <md-button
           class="md-raised md-primary"
-          @click="loginWithFacebook"><i class="btn-icon fab fa-facebook"></i> Facebook</md-button>
+          @click="login(LOGIN_PROVIDER.facebook)"><i class="btn-icon fab fa-facebook"></i> Facebook</md-button>
         <md-button
           class="md-raised md-primary"
-          @click="loginWithTwitter"><i class="btn-icon fab fa-twitter"></i> Twitter</md-button>
+          @click="login(LOGIN_PROVIDER.twitter)"><i class="btn-icon fab fa-twitter"></i> Twitter</md-button>
         <md-button
           class="md-raised md-primary"
-          @click="loginWithGithub"><i class="btn-icon fab fa-github"></i> GitHub</md-button>
+          @click="login(LOGIN_PROVIDER.github)"><i class="btn-icon fab fa-github"></i> GitHub</md-button>
       </div>
       <div class="user-count-area">
         Now {{app.userCount}} users.
@@ -28,11 +28,14 @@
 <script>
 import { mapActions } from 'vuex'
 import axios from 'axios';
+import { loginWith, LOGIN_PROVIDER } from '~/plugins/auth'
+
 
 export default {
-  name: 'Login',
+  name: 'login',
   data () {
     return {
+      LOGIN_PROVIDER: LOGIN_PROVIDER,
       app: {
         title: 'Markdown Mome',
         discription: 'Online markdown memo',
@@ -43,7 +46,8 @@ export default {
   created: function() {
     axios.get('https://us-central1-mymarkdown-233ca.cloudfunctions.net/getUserCount')
       .then(res => {
-        this.app.userCount = res.data.count;
+        this.app.userCount = res.data.count
+        this.setShowLoading(false)
       });
   },
   // 認証失敗時の処理
@@ -51,33 +55,26 @@ export default {
     ...mapActions([
       'setShowLoading',
       'setLoginUser',
+      'setShowSnackbar',
     ]),
-    loginWithGoogle: function() {
-      this.loginWith(new firebase.auth.GoogleAuthProvider());
-    },
-    loginWithFacebook: function() {
-      this.loginWith(new firebase.auth.FacebookAuthProvider());
-    },
-    loginWithTwitter: function() {
-      this.loginWith(new firebase.auth.TwitterAuthProvider());
-    },
-    loginWithGithub: function() {
-      this.loginWith(new firebase.auth.GithubAuthProvider())
-    },
-    loginWith: function(provider) {
-
+    login: function(provider) {
       this.setShowLoading(true)
-      firebase.auth().signInWithPopup(provider)
-      .then(result => {
-        this.setLoginUser(result.user)
-        this.$router.replace('/editor', () => {
+
+      loginWith(provider)
+        .then(result => {
+          this.setLoginUser(result.user)
+          this.$router.replace('/editor', () => {
+            this.setShowSnackbar({
+              isShow: true,
+              text: 'Logged in'
+            })
+            // ローディングは遷移先で解除する
+          });
+        })
+        .catch(error => {
           this.setShowLoading(false)
+          alert('[' + error.code + ']' + error.message);
         });
-      })
-      .catch(error => {
-        this.setShowLoading(false)
-        alert('[' + error.code + ']' + error.message);
-      });
     }
   }
 }

@@ -1,45 +1,33 @@
 <template>
   <div id="app">
-    <Navigation></Navigation>
     <div v-if="showLoading" class="waiting">
       <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
     </div>
+    <div :class="{ hideScreen: showLoading }" >
+      <nuxt/>
+    </div>
 
-    <router-view></router-view>
     <Snackbar></Snackbar>
   </div>
 </template>
 
 <script>
-import Login from './components/Login.vue';
-import Editor from './components/Editor.vue';
-import Snackbar from './components/Snackbar.vue';
-import { mapState } from 'vuex';
+import Snackbar from '~/components/Snackbar.vue';
+import { mapState, mapActions } from 'vuex';
 
 export default {
-  name: 'App',
   computed: {
     ...mapState([
       'showLoading',
     ])
   },
-  methods: mapState([
-    'setLoginUser'
-  ]),
-  created: function() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.setLoginUser(true)
-    })
-  },
   components: {
-    'Login': Login,
-    'Editor': Editor,
     'Snackbar': Snackbar,
   },
 }
 </script>
 
-<style lang="scss">
+<style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -54,6 +42,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hideScreen {
+  display: none;
 }
 
 h1, h2 {

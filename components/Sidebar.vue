@@ -25,9 +25,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import Navigation1 from './Navigation1.vue'
-import Navigation2 from './Navigation2.vue'
-import MemoController from './common/MemoController.vue';
+import MemoController from '~/components/common/MemoController.vue';
 
 
 export default {
