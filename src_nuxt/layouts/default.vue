@@ -3,8 +3,10 @@
     <div v-if="showLoading" class="waiting">
       <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
     </div>
+    <div :class="{ hideScreen: showLoading }" >
+      <nuxt/>
+    </div>
 
-    <nuxt/>
     <Snackbar></Snackbar>
   </div>
 </template>
@@ -40,6 +42,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hideScreen {
+  display: none;
 }
 
 h1, h2 {

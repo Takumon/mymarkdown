@@ -63,11 +63,11 @@ export default {
         .then(result => {
           this.setLoginUser(result.user)
           this.$router.replace('/editor', () => {
-            this.setShowLoading(false)
             this.setShowSnackbar({
               isShow: true,
               text: 'Logged in'
             })
+            // ローディングは遷移先で解除する
           });
         })
         .catch(error => {
