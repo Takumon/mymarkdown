@@ -7,6 +7,9 @@ module.exports = {
     STORAGEBUCKET: '',
     MESSAGINGSENDERID: '360435751539',
   },
+  router: {
+    middleware: 'authenticated'
+  },
   /*
   ** Headers of the page
   */
