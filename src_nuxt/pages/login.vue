@@ -46,7 +46,8 @@ export default {
   created: function() {
     axios.get('https://us-central1-mymarkdown-233ca.cloudfunctions.net/getUserCount')
       .then(res => {
-        this.app.userCount = res.data.count;
+        this.app.userCount = res.data.count
+        this.setShowLoading(false)
       });
   },
   // 認証失敗時の処理

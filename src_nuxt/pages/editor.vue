@@ -1,6 +1,6 @@
 <template>
 
-  <md-app md-waterfall md-mode="fixed">
+  <md-app v-if="!showLoading" md-waterfall md-mode="fixed">
     <md-app-toolbar class="md-primary">
       <Navigation1 />
       <Navigation2 />
@@ -54,6 +54,7 @@ export default {
   computed: {
     ...mapState([
       'selectedMemoIndex',
+      'showLoading',
     ]),
     showSidebar: {
       get() {
@@ -72,7 +73,7 @@ export default {
       }
     },
   },
-  created: function() {
+  created () {
     this.getMemosFromDBAndSetStore()
   },
 
@@ -86,7 +87,6 @@ export default {
   beforeDestroy () {
     clearInterval(this.intervalId)
   },
-
 
   methods: {
     ...mapActions([
