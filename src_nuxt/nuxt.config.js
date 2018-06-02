@@ -39,6 +39,7 @@ module.exports = {
   plugins: [
     '~/plugins/vue-material',
     '~/plugins/vue-scroll',
+    '~plugins/filters.js',
   ],
 
   /*
