@@ -32,7 +32,7 @@ import { loginWith, LOGIN_PROVIDER } from '~/plugins/auth'
 
 
 export default {
-  name: 'Login',
+  name: 'login',
   data () {
     return {
       LOGIN_PROVIDER: LOGIN_PROVIDER,
@@ -62,8 +62,7 @@ export default {
       loginWith(provider)
         .then(result => {
           this.setLoginUser(result.user)
-          // TODO editorページ作成後に 遷移先修正
-          this.$router.replace('/', () => {
+          this.$router.replace('/editor', () => {
             this.setShowLoading(false)
             this.setShowSnackbar({
               isShow: true,
