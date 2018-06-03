@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <img src="~assets/title.png">
+    <img src="/title-login.png">
     <p class="app-discription">{{app.discription}}</p>
     <md-content class="content md-elevation-6">
       <div class="content-discription">Login with ...</div>

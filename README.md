@@ -1,5 +1,5 @@
 
-![アプリロゴ](assets/title.png)
+![アプリロゴ](static/title-login.png)
 
 MardDown Online Editor
 

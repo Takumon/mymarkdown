@@ -6,8 +6,7 @@ import vuescroll from 'vue-scroll'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-import '../src/helpers/dateFormatFilter.js'
-
+import '../plugins/filters.js'
 
 // Install Vue plugins.
 Vue.use(Vuex);
@@ -16,7 +15,7 @@ Vue.use(vuescroll)
 
 
 function loadStories() {
-  require('../src/stories');
+  require('../stories');
 }
 
 configure(loadStories, module);
