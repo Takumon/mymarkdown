@@ -4,7 +4,7 @@
       <md-button v-if="!showSidebar" class="md-icon-button" @click="setShowSidebar(true)">
         <md-icon>menu</md-icon>
       </md-button>
-      <img class="md-title" src="/title-nav.png">
+      <img class="md-title" src="title-nav.png">
     </div>
 
     <div class="md-toolbar-section-end user-info-area">
