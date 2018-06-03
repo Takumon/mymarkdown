@@ -22,13 +22,11 @@ export default {
       'store_deleteMemo': 'deleteMemo',
       'store_updateMemoUpdated': 'updateMemoUpdated',
       'store_setShowSnackbar': 'setShowSnackbar',
-      'store_setShowLoading': 'setShowLoading',
       'store_setNowSaving': 'setNowSaving',
     }),
 
     // DBからメモを取得し、ストアに設定
     getMemosFromDBAndSetStore: function() {
-      this.store_setShowLoading(true)
 
       return this.$_memoController_getMeomsFromDB().then(result => {
         if (result.val()) {
@@ -42,7 +40,6 @@ export default {
           // 初期登録時はデフォルトで１件追加する
           this.store_addMemo()
         }
-        this.store_setShowLoading(false)
       })
     },
 

@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <h1 class="app-title">{{app.title}}</h1>
+    <img src="~assets/title.png">
     <p class="app-discription">{{app.discription}}</p>
     <md-content class="content md-elevation-6">
       <div class="content-discription">Login with ...</div>
@@ -37,8 +37,7 @@ export default {
     return {
       LOGIN_PROVIDER: LOGIN_PROVIDER,
       app: {
-        title: 'Markdown Mome',
-        discription: 'Online markdown memo',
+        discription: 'MarkDown Online Memo',
         userCount: null,
       },
     };
@@ -68,7 +67,7 @@ export default {
               isShow: true,
               text: 'Logged in'
             })
-            // ローディングは遷移先で解除する
+            this.setShowLoading(false)
           });
         })
         .catch(error => {

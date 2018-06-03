@@ -42,7 +42,21 @@ module.exports = {
     '~/plugins/vue-scroll',
     '~plugins/filters.js',
   ],
-
+  modules: [
+    '@nuxtjs/pwa'
+  ],
+  manifest: {
+    display: "fullscreen",
+    name: 'MarkDown Online Memo',
+    short_name: 'MDOM',
+    title: 'MarkDown Online Memo',
+    'og:title': 'ogTitle',
+    description: 'MarkDown Online Memo',
+    'og:description': 'MarkDown Online Memo',
+    lang: 'ja',
+    theme_color: '#f5f5f5',
+    background_color: '#f5f5f5'
+  },
   /*
   ** Build configuration
   */

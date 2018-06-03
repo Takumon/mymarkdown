@@ -4,7 +4,7 @@
       <md-button v-if="!showSidebar" class="md-icon-button" @click="setShowSidebar(true)">
         <md-icon>menu</md-icon>
       </md-button>
-      <span class="md-title">Markdown Mome</span>
+      <img class="md-title" src="~assets/title-nav.png">
     </div>
 
     <div class="md-toolbar-section-end user-info-area">
@@ -56,7 +56,7 @@ export default {
 
 <style lang="scss" scoped>
 .md-title {
-  white-space: nowrap;
+  width: 128px;
 }
 
 .user-info-area {
@@ -73,8 +73,7 @@ export default {
 
 @media (max-width: 586px) {
   .md-title {
-    font-size: 12px;
-    font-weight: 600;
+    width: 100px;
   }
   .user-info {
     font-size: 12px;

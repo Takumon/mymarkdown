@@ -12,6 +12,8 @@
     </md-app-drawer>
 
     <md-app-content>
+      <md-progress-spinner v-if="!memos[selectedMemoIndex]" md-mode="indeterminate"></md-progress-spinner>
+
       <EditorContent
         v-if="memos[selectedMemoIndex]"
         :memo="memos[selectedMemoIndex]"
