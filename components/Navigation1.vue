@@ -1,7 +1,7 @@
 <template>
   <div class="md-toolbar-row">
     <div class="md-toolbar-section-start">
-      <md-button v-if="!showSidebar" class="md-icon-button" @click="setShowSidebar(true)">
+      <md-button class="md-icon-button" @click="setShowSidebar(true)">
         <md-icon>menu</md-icon>
       </md-button>
       <img class="md-title" src="title-nav.png">

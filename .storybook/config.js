@@ -14,8 +14,11 @@ Vue.use(VueMaterial)
 Vue.use(vuescroll)
 
 
+// コンポーネントを同階層にストーリを配置
+const req = require.context('../stories', true, /\.story\.js$/)
+
 function loadStories() {
-  require('../stories');
+  req.keys().forEach((filename) => req(filename))
 }
 
 configure(loadStories, module);
