@@ -8,32 +8,36 @@ const workboxSW = new self.WorkboxSW({
 
 workboxSW.precache([
   {
-    "url": "/_nuxt/app.a631d87f588a6bc7e6c1.js",
-    "revision": "0b37e5ec7ed00558d71da02dd6ceeb6d"
+    "url": "/_nuxt/app.eaa9dfca7142566a7bd8.js",
+    "revision": "c3e0b82f7055dd515bbf4485c6d68ec7"
   },
   {
-    "url": "/_nuxt/layouts/default.646128771a5efe21d4e2.js",
-    "revision": "79aeee0656c4082ebaa7225beb3d6be2"
+    "url": "/_nuxt/layouts/default.4b9d5226ed83d1517ba5.js",
+    "revision": "a5efe4b7a32d6ac8bead85c93ca16255"
   },
   {
-    "url": "/_nuxt/manifest.83341b3f2fe9df013125.js",
-    "revision": "901283677ee0d07f6b0c545b1f55c19f"
+    "url": "/_nuxt/manifest.a45e0bcc9860f0602903.js",
+    "revision": "703bd22073bac172ed56b86f2554c074"
   },
   {
-    "url": "/_nuxt/pages/editor.e7a4c4198d6326798853.js",
-    "revision": "297530c284bcc6e6736c6137c99c480f"
+    "url": "/_nuxt/pages/editor.74e96cabc2d9a15771ab.js",
+    "revision": "88c8f1da62c5550bfc37ef9f1c83c4a5"
   },
   {
-    "url": "/_nuxt/pages/index.3285529636c8115a5ec7.js",
-    "revision": "66ce66c768c707384d186df9bd495173"
+    "url": "/_nuxt/pages/index.0ffc04e0ea7aa5abcc47.js",
+    "revision": "b1674996377e1a2afe438204b4b3388c"
   },
   {
-    "url": "/_nuxt/pages/login.7545d94363935186d9fd.js",
-    "revision": "62b6ab87743cce188e68998e3f03503a"
+    "url": "/_nuxt/pages/login.88ebdba6fcc183373a07.js",
+    "revision": "f24cb9d0ac794eb4d3cc60ed569996f0"
   },
   {
-    "url": "/_nuxt/vendor.6fd4f2c5a68028611eee.js",
-    "revision": "3a18e31636695fe0cd219fd8b8bcde14"
+    "url": "/_nuxt/pages/sample.41bd78169c684006b3a3.js",
+    "revision": "e03e346de8bca49aef0f1f8d75e69ac6"
+  },
+  {
+    "url": "/_nuxt/vendor.452cc5a32c6380c42a12.js",
+    "revision": "61669126397bca272ac908c7539b7872"
   }
 ])
 
