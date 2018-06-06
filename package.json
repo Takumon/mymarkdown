@@ -14,6 +14,7 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
     "test:unit": "TEST=unit ava --verbose",
+    "test:unit:update": "TEST=unit ava --verbose --update-snapshots",
     "storybook:start": "start-storybook -p 9001 -s ./static -c .storybook",
     "storybook:build": "build-storybook -s ./static -c .storybook -o docs"
   },
