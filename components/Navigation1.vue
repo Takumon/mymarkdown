@@ -39,15 +39,18 @@ export default {
     ...mapActions([
       'setShowSidebar',
       'setShowSnackbar',
+      'setFromLogout'
     ]),
     logout: function() {
       signOut().then(() => {
-        this.$router.replace('/login', () => {
-          this.setShowSnackbar({
-            isShow: true,
-            text: 'Logged out'
+        this.setFromLogout(true).then(() => {
+          this.$router.replace('/login', () => {
+            this.setShowSnackbar({
+              isShow: true,
+              text: 'Logged out'
+            })
           })
-        });
+        })
       })
     },
   },

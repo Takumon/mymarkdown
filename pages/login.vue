@@ -26,28 +26,59 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import axios from 'axios';
-import { loginWith, LOGIN_PROVIDER } from '~/plugins/auth'
+import { authInLogin, loginWith, LOGIN_PROVIDER } from '~/plugins/auth'
 
 
 export default {
   name: 'login',
-  data () {
-    return {
-      LOGIN_PROVIDER: LOGIN_PROVIDER,
-      app: {
-        discription: 'MarkDown Online Memo',
-        userCount: null,
-      },
-    };
+  asyncData() {
+    return axios.get('https://us-central1-mymarkdown-233ca.cloudfunctions.net/getUserCount')
+      .then(res => {
+        return {
+          LOGIN_PROVIDER: LOGIN_PROVIDER,
+          app: {
+            discription: 'MarkDown Online Memo',
+            userCount: res.data.count,
+          },
+        };
+      });
+  },
+  fetch({ store }) {
+    return store.dispatch('setShowLoading', true)
   },
   created: function() {
-    axios.get('https://us-central1-mymarkdown-233ca.cloudfunctions.net/getUserCount')
-      .then(res => {
-        this.app.userCount = res.data.count
-        this.setShowLoading(false)
-      });
+    authInLogin().then(user => {
+      // ログアウト画面からの遷移の場合
+      if (this.fromLogout) {
+        return this.setFromLogout(false).then(() => {
+          return this.setShowLoading(false)
+        })
+      }
+
+      // リダイレクトログイン未実施の場合
+      if (!user) {
+        return this.setShowLoading(false)
+      }
+
+      // リダイレクトログインの場合
+      this.setLoginUser(user).then(() => {
+        this.$router.replace('/editor', () => {
+          this.setShowSnackbar({
+            isShow: true,
+            text: 'Logged in'
+          })
+
+          // ローディング解除はログイン先の画面初期処理に託す
+        });
+      })
+    })
+  },
+  computed: {
+    ...mapState([
+      'fromLogout'
+    ])
   },
   // 認証失敗時の処理
   methods: {
@@ -55,25 +86,12 @@ export default {
       'setShowLoading',
       'setLoginUser',
       'setShowSnackbar',
+      'setFromLogout'
     ]),
-    login: function(provider) {
-      this.setShowLoading(true)
-
-      loginWith(provider)
-        .then(result => {
-          this.setLoginUser(result.user)
-          this.$router.replace('/editor', () => {
-            this.setShowSnackbar({
-              isShow: true,
-              text: 'Logged in'
-            })
-            this.setShowLoading(false)
-          });
-        })
-        .catch(error => {
-          this.setShowLoading(false)
-          alert('[' + error.code + ']' + error.message);
-        });
+    login (providor) {
+      this.setShowLoading(true).then(() => {
+        loginWith(providor)
+      })
     }
   }
 }

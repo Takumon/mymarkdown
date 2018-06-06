@@ -53,6 +53,25 @@ export default {
       intervalId: null,
     }
   },
+  created () {
+    // ログイン画面からの遷移の場合はローディングアイコンが表示あれた状態なので、非表示を設定する
+    this.setShowLoading(false).then(() => {
+      this.getMemosFromDBAndSetStore()
+    })
+  },
+
+  // 定期的にメモを保存
+  mounted: function() {
+    this.intervalId = setInterval(() => {
+      this.saveMemos();
+    }, 40 * 1000);
+  },
+  // インスタンス破棄時に定期的保存処理を解除
+  beforeDestroy () {
+    clearInterval(this.intervalId)
+  },
+
+
   computed: {
     ...mapState([
       'selectedMemoIndex',
@@ -75,26 +94,12 @@ export default {
       }
     },
   },
-  created () {
-    this.getMemosFromDBAndSetStore()
-  },
-
-  // 定期的にメモを保存
-  mounted: function() {
-    this.intervalId = setInterval(() => {
-      this.saveMemos();
-    }, 40 * 1000);
-  },
-  // インスタンス破棄時に定期的保存処理を解除
-  beforeDestroy () {
-    clearInterval(this.intervalId)
-  },
-
   methods: {
     ...mapActions([
       'setSelectedMemoIndex',
       'setShowSidebar',
       'setShowDeletingDialog',
+      'setShowLoading'
     ]),
   },
   components: {
