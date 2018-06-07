@@ -77,7 +77,7 @@
       "./test/setup.js"
     ],
     "files": [
-      "./test/specs/*.js"
+      "./test/specs/*.spec.js"
     ],
     "snapshotDir": "./test/snapshots"
   },
