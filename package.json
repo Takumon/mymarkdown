@@ -13,8 +13,8 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "test:unit": "TEST=unit ava --verbose",
-    "test:unit:update": "TEST=unit ava --verbose --update-snapshots",
+    "test:unit": "jest",
+    "test:unit:coverage": "jest --coverage",
     "storybook:start": "start-storybook -p 9001 -s ./static -c .storybook",
     "storybook:build": "build-storybook -s ./static -c .storybook -o docs"
   },
@@ -43,9 +43,9 @@
     "@storybook/addon-notes": "^3.4.5",
     "@storybook/vue": "^3.4.6",
     "ajv": "^6.0.0",
-    "ava": "^0.25.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
+    "babel-jest": "^23.0.1",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -59,6 +59,8 @@
     "eslint-loader": "^1.7.1",
     "eslint-plugin-vue": "^4.0.0",
     "file-loader": "^1.1.4",
+    "jest": "^23.1.0",
+    "jest-vue-preprocessor": "^1.4.0",
     "node-sass": "^4.5.3",
     "prettier": "^1.13.4",
     "require-extension-hooks": "^0.3.2",
@@ -71,15 +73,20 @@
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   },
-  "ava": {
-    "require": [
-      "babel-register",
-      "./test/setup.js"
+  "jest": {
+    "moduleNameMapper": {
+      "^vue$": "vue/dist/vue.common.js",
+      "^@/(.*)$": "<rootDir>/$1",
+      "^~/(.*)$": "<rootDir>/$1"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "vue"
     ],
-    "files": [
-      "./test/specs/*.spec.js"
-    ],
-    "snapshotDir": "./test/snapshots"
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/jest-vue-preprocessor"
+    }
   },
   "babel": {
     "presets": [
