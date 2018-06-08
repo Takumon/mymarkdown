@@ -38,27 +38,33 @@ describe('TestSample.js', () => {
       localVue
     })
   })
+  describe('初期表示', () => {
 
-  // test('TestSample.vue スナップショット', () => {
-  //   t.snapshot({ html: wrapper.html() })
-  // })
+    test('初期表示スナップショット', () => {
+      expect({ html: wrapper.html() }).toMatchSnapshot()
+    })
 
-  test('TestSample.vue 初期表示 リストが表示される', () => {
-    const $items = wrapper.findAll('li').wrappers
+    test('初期表示 リストが表示される', () => {
+      const $items = wrapper.findAll('li').wrappers
 
-    $items.forEach(($item, index) => {
-      expect($item.text()).toEqual(list[index])
+      $items.forEach(($item, index) => {
+        expect($item.text()).toEqual(list[index])
+      })
+    })
+
+    test('初期表示 ボタンがfalseで表示される', () => {
+      const $button = wrapper.find('#toggleLoading')
+      expect($button.text()).toEqual('false')
     })
   })
 
-  test('TestSample.vue 初期表示 ボタンがfalseで表示される', () => {
-    const $button = wrapper.find('#toggleLoading')
-    expect($button.text()).toEqual('false')
-  })
 
-  test('TestSample.vue ボタンクリック後 ボタンがtrueで表示される', () => {
-    const $button = wrapper.find('#toggleLoading')
-    $button.trigger('click')
-    expect($button.text()).toEqual('true')
+  describe('ボタンクリック後', () => {
+
+    test('ボタンがtrueで表示される', () => {
+      const $button = wrapper.find('#toggleLoading')
+      $button.trigger('click')
+      expect($button.text()).toEqual('true')
+    })
   })
 })
