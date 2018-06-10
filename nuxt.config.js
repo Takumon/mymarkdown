@@ -77,6 +77,21 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+
+      if (!isDev) {
+        const vueLoader = config.module.rules.find(rule => rule.loader === 'vue-loader')
+        vueLoader.options.compilerModules = [{
+          preTransformNode(astEl) {
+            const { attrsMap, attrsList } = astEl
+            if (attrsMap['data-test']) {
+              delete attrsMap['data-test']
+              const index  = attrsList.findIndex(x => x.name == 'data-test' )
+              attrsList.splice(index, 1)
+            }
+            return astEl
+          }
+        }]
+      }
     }
   }
 }
