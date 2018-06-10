@@ -1,4 +1,4 @@
-import firebase from '~/plugins/firebase'
+import firebase from '~/plugins/firebase.js'
 import * as firebaseCore from 'firebase'
 
 export function auth () {

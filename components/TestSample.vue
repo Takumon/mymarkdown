@@ -5,7 +5,14 @@
       {{ item }}
     </li>
   </ul>
+  <md-button>Default</md-button>
   <button id="toggleLoading" @click="toggle">{{showLoading}}</button>
+  <md-button class="md-primary" @click="showSnackbar = !showSnackbar">{{showSnackbar}}</md-button>
+
+  <md-snackbar :md-position="center" :md-duration="Infinity" :md-active="showSnackbar" md-persistent>
+    <span>Sample!</span>
+    <md-button class="md-primary" @click="showSnackbar = false">Retry</md-button>
+  </md-snackbar>
 </div>
 </template>
 
@@ -19,6 +26,11 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  data: function() {
+    return {
+      showSnackbar: true
+    }
   },
   computed: {
     ...mapState([

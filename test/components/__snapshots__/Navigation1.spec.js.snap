@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation1.vue 初期表示 スナップショット 1`] = `
+<div class="md-toolbar-row">
+  <div class="md-toolbar-section-start">
+    <button type="button" class="md-button md-icon-button md-theme-default">
+      <div class="md-ripple">
+        <div class="md-button-content">
+          <i class="md-icon md-icon-font md-theme-default">menu</i>
+        </div>
+      </div>
+    </button>
+    <img src="title-nav.png" class="md-title">
+  </div>
+  <div class="md-toolbar-section-end user-info-area">
+    <div class="user-info">
+      <i class="fas fa-user"></i> SampleName</div>
+    <button type="button" class="md-button md-theme-default">
+      <div class="md-ripple">
+        <div class="md-button-content">
+          <i class="btn-icon fas fa-sign-out-alt"></i> LOOUT</div>
+      </div>
+    </button>
+  </div>
+</div>
+`;
