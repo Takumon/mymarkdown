@@ -13,7 +13,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "test:unit": "jest -coverage",
+    "test:unit": "jest --coverage",
     "test:unit:update": "jest --updateSnapshot",
     "storybook:start": "start-storybook -p 9001 -s ./static -c .storybook",
     "storybook:build": "build-storybook -s ./static -c .storybook -o docs"
