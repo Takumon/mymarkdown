@@ -6,7 +6,7 @@ import {
   MdButton,
 } from 'vue-material/dist/components'
 
-import TestSample from '../../components/Navigation1.vue'
+import TestTargetVue from '../../components/Navigation1.vue'
 
 
 
@@ -98,7 +98,7 @@ describe('Navigation1.vue', () => {
     })
 
 
-    wrapper = shallowMount(TestSample, {
+    wrapper = shallowMount(TestTargetVue, {
       store,
       localVue,
       router,
