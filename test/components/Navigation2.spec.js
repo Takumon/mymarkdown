@@ -68,16 +68,16 @@ describe('Navigation2.vue', () => {
       $previewTabButton.trigger('click')
 
       // プレビュータブが有効
-      expect(store.state.textEditorPreviewMode).toEqual('tab-preview')
       expect($previewTabButton.classes()).toContain('md-active')
+      expect(store.state.textEditorPreviewMode).toEqual('tab-preview')
 
       // エディタータブクリック時
       const $editorTabButton = wrapper.find('[mdicon="mode_edit"]')
       $editorTabButton.trigger('click')
 
       // エディタータブが有効
-      expect(store.state.textEditorPreviewMode).toEqual('tab-editor')
       expect($editorTabButton.classes()).toContain('md-active')
+      expect(store.state.textEditorPreviewMode).toEqual('tab-editor')
     })
   })
 
