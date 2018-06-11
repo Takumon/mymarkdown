@@ -55,7 +55,7 @@ describe('Navigation2.vue', () => {
     })
 
     test('編集かつプレビューモードが有効', () => {
-      expect(store.state.textEditorPreviewMode).toEqual('tab-editor-and-preview')
+      expect(store.state.textEditorPreviewMode).toBe('tab-editor-and-preview')
 
       const $editorAndPrevieweTabButton = wrapper.find('[mdicon="chrome_reader_mode"]')
       expect($editorAndPrevieweTabButton.classes()).toContain('md-active')
@@ -71,7 +71,7 @@ describe('Navigation2.vue', () => {
     test('プレビューモードが有効', () => {
       const $previewTabButton = wrapper.find('[mdicon="description"]')
       expect($previewTabButton.classes()).toContain('md-active')
-      expect(store.state.textEditorPreviewMode).toEqual('tab-preview')
+      expect(store.state.textEditorPreviewMode).toBe('tab-preview')
     })
   })
 
@@ -84,7 +84,7 @@ describe('Navigation2.vue', () => {
     test('エディターモードが有効', () => {
       const $editorTabButton = wrapper.find('[mdicon="mode_edit"]')
       expect($editorTabButton.classes()).toContain('md-active')
-      expect(store.state.textEditorPreviewMode).toEqual('tab-editor')
+      expect(store.state.textEditorPreviewMode).toBe('tab-editor')
     })
   })
 
