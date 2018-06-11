@@ -8,6 +8,7 @@ import {
 
 import TestTargetVue from '../../components/Navigation2.vue'
 
+jest.useFakeTimers();
 
 describe('Navigation2.vue', () => {
   let wrapper
@@ -44,6 +45,7 @@ describe('Navigation2.vue', () => {
       store,
       localVue,
     })
+    jest.runAllTimers()
   })
 
   describe('初期表示', () => {
@@ -60,22 +62,27 @@ describe('Navigation2.vue', () => {
     })
   })
 
-  describe('タブクリック時', () => {
-
-    test('クリックしたタブが有効', () => {
-      // プレビュータブクリック時
+  describe('プレビュータブクリック時', () => {
+    beforeEach(() => {
       const $previewTabButton = wrapper.find('[mdicon="description"]')
       $previewTabButton.trigger('click')
+    })
 
-      // プレビュータブが有効
+    test('プレビューモードが有効', () => {
+      const $previewTabButton = wrapper.find('[mdicon="description"]')
       expect($previewTabButton.classes()).toContain('md-active')
       expect(store.state.textEditorPreviewMode).toEqual('tab-preview')
+    })
+  })
 
-      // エディタータブクリック時
+  describe('エディタータブクリック時', () => {
+    beforeEach(() => {
       const $editorTabButton = wrapper.find('[mdicon="mode_edit"]')
       $editorTabButton.trigger('click')
+    })
 
-      // エディタータブが有効
+    test('エディターモードが有効', () => {
+      const $editorTabButton = wrapper.find('[mdicon="mode_edit"]')
       expect($editorTabButton.classes()).toContain('md-active')
       expect(store.state.textEditorPreviewMode).toEqual('tab-editor')
     })
