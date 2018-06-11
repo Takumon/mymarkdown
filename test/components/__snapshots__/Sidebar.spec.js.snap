@@ -9,14 +9,28 @@ exports[`Sidebar.vue 初期表示 スナップショット 1`] = `
     <li data-selected="true" class="md-list-item md-list-item-text memo-list-item">
       <button type="button" class="md-list-item-button md-list-item-container md-button-clean">
         <div class="md-list-item-content md-ripple">
-          <p class="memo-title"># メモその１</p>
+          <p class="memo-title"># マークダウン形式のメモ</p>
         </div>
       </button>
     </li>
     <li class="md-list-item md-list-item-text memo-list-item">
       <button type="button" class="md-list-item-button md-list-item-container md-button-clean">
         <div class="md-list-item-content md-ripple">
-          <p class="memo-title"># メモその2</p>
+          <p class="memo-title"># ソースコードを含むメモ</p>
+        </div>
+      </button>
+    </li>
+    <li class="md-list-item md-list-item-text memo-list-item">
+      <button type="button" class="md-list-item-button md-list-item-container md-button-clean">
+        <div class="md-list-item-content md-ripple">
+          <p class="memo-title"></p>
+        </div>
+      </button>
+    </li>
+    <li class="md-list-item md-list-item-text memo-list-item">
+      <button type="button" class="md-list-item-button md-list-item-container md-button-clean">
+        <div class="md-list-item-content md-ripple">
+          <p class="memo-title"></p>
         </div>
       </button>
     </li>

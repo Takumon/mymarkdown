@@ -10,8 +10,9 @@ import {
 import TestTargetVue from '../../components/Sidebar.vue'
 
 
+jest.useFakeTimers();
 
-describe('Sidebar.vue', () => {
+describe.only('Sidebar.vue', () => {
 
   let wrapper
   let store
@@ -29,7 +30,7 @@ describe('Sidebar.vue', () => {
       state: {
         memos: [
           {
-            markdown: '# メモその１' + `
+            markdown: '# マークダウン形式のメモ' + `
               * 結構
               * たくさん
               * めもる
@@ -39,13 +40,31 @@ describe('Sidebar.vue', () => {
             updated: sysdate,
           },
           {
-            markdown: '# メモその2' + `
-              * memo
+            markdown: '# ソースコードを含むメモ' + `
+              \`\`\`Java
+              public static void main(String[] args) {
+                System.out.print("Hello!");
+              }
+              \`\`\`
             `,
             tags: [],
             created: sysdate,
             updated: sysdate,
-          }
+          },
+          {
+            markdown: '',
+            tags: ['空文字のメモ'],
+            created: sysdate,
+            updated: sysdate,
+          },
+          {
+            markdown: '' + `
+              * 1行目が空文字のメモ
+            `,
+            tags: [],
+            created: sysdate,
+            updated: sysdate,
+          },
         ],
         selectedMemoIndex: 0,
         showSidebar: false,
@@ -104,6 +123,7 @@ describe('Sidebar.vue', () => {
       store,
       localVue,
     })
+    jest.runAllTimers()
   })
 
   describe('初期表示', () => {
@@ -112,5 +132,19 @@ describe('Sidebar.vue', () => {
       expect(wrapper).toMatchSnapshot()
     })
 
+    test('メモの1行目がタイトルに表示される', () => {
+      const $titles = wrapper.findAll('.memo-title')
+      expect($titles.length).toBe(4)
+      expect($titles.at(0).text()).toBe('# マークダウン形式のメモ')
+      expect($titles.at(1).text()).toBe('# ソースコードを含むメモ')
+      expect($titles.at(2).text()).toBe('')
+      expect($titles.at(3).text()).toBe('')
+    })
+
+    test('先頭のメモが選択済になっている', () => {
+      expect(store.state.selectedMemoIndex).toBe(0)
+      const $listItems = wrapper.findAll('.memo-list-item')
+      expect($listItems.at(0).attributes()['data-selected']).toBe('true')
+    })
   })
 })
