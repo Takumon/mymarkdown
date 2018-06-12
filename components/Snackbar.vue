@@ -1,7 +1,7 @@
 <template>
   <md-snackbar :md-position="center" :md-duration="4000" :md-active.sync="showSnackbar" md-persistent>
-    <span>{{snackbarText}}</span>
-    <md-button class="" @click="setShowSnackbar({ isShow: false})"><i class="fas fa-times"></i></md-button>
+    <span data-test="snackbar-text">{{snackbarText}}</span>
+    <md-button data-test="close-button" @click="setShowSnackbar({ isShow: false})"><i class="fas fa-times"></i></md-button>
   </md-snackbar>
 </template>
 
