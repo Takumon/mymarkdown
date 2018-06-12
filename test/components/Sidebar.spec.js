@@ -1,5 +1,5 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
+import Vuex, { mapState, mapActions } from 'vuex'
 import {
   MdToolbar,
   MdList,
@@ -12,7 +12,7 @@ import TestTargetVue from '../../components/Sidebar.vue'
 
 jest.useFakeTimers();
 
-describe.only('Sidebar.vue', () => {
+describe('Sidebar.vue', () => {
 
   let wrapper
   let store
@@ -122,6 +122,12 @@ describe.only('Sidebar.vue', () => {
     wrapper = shallowMount(TestTargetVue, {
       store,
       localVue,
+      mixins: [{
+        methods: {
+          // ストアの選択中Memoの更新日を更新して、DB保存
+          saveMemos: () => Promise.resolve(true)
+        }
+      }]
     })
     jest.runAllTimers()
   })
@@ -141,10 +147,38 @@ describe.only('Sidebar.vue', () => {
       expect($titles.at(3).text()).toBe('')
     })
 
-    test('先頭のメモが選択済になっている', () => {
+    test('1番目のメモが選択済になっている', () => {
       expect(store.state.selectedMemoIndex).toBe(0)
       const $listItems = wrapper.findAll('.memo-list-item')
       expect($listItems.at(0).attributes()['data-selected']).toBe('true')
+    })
+  })
+
+  describe('2番目メモ選択時', () => {
+    beforeEach(() => {
+      const $secondlistItem = wrapper.findAll('.memo-list-item').at(1)
+      $secondlistItem.trigger('click')
+      jest.runAllTimers()
+    })
+
+    test('2番目のメモが選択済になっている', () => {
+      expect(store.state.selectedMemoIndex).toBe(1)
+      const $listItems = wrapper.findAll('.memo-list-item')
+      expect($listItems.at(1).attributes()['data-selected']).toBe('true')
+    })
+  })
+
+  describe('最後のメモ選択時', () => {
+    beforeEach(() => {
+      const $secondlistItem = wrapper.findAll('.memo-list-item').at(3)
+      $secondlistItem.trigger('click')
+      jest.runAllTimers()
+    })
+
+    test('最後のメモが選択済になっている', () => {
+      expect(store.state.selectedMemoIndex).toBe(3)
+      const $listItems = wrapper.findAll('.memo-list-item')
+      expect($listItems.at(3).attributes()['data-selected']).toBe('true')
     })
   })
 })
