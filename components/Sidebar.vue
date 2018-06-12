@@ -17,6 +17,7 @@
     <div>
       <md-tooltip>Add Memo</md-tooltip>
       <md-button
+        data-test="add-memo-button"
         class="md-raised md-icon-button addMemoBtn"
         @click="addMemo"><i class="btn-icon fas fa-plus"></i></md-button>
     </div>

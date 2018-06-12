@@ -36,7 +36,7 @@ exports[`Sidebar.vue 初期表示 スナップショット 1`] = `
     </li>
   </ul>
   <div>
-    <button type="button" class="md-button md-raised md-icon-button addMemoBtn md-theme-default">
+    <button type="button" class="md-button md-raised md-icon-button addMemoBtn md-theme-default" data-test="add-memo-button">
       <div class="md-ripple">
         <div class="md-button-content">
           <i class="btn-icon fas fa-plus"></i>

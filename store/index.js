@@ -105,7 +105,7 @@ const store = () => new Vuex.Store({
     },
     addMemo (state, payload) {
       const sysdate = new Date().toString()
-      payload.memo.markdown = payload.memo.markdown || '無題のメモ'
+      payload.memo.markdown = payload.memo.markdown || '# 無題のメモ'
       payload.memo.tags = payload.memo.tags || []
       payload.memo.created = payload.memo.created || sysdate
       payload.memo.updated = payload.memo.updated || sysdate

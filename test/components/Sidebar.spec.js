@@ -103,7 +103,7 @@ describe('Sidebar.vue', () => {
         },
         addMemo (state, payload) {
           const sysdate = new Date().toString()
-          payload.memo.markdown = payload.memo.markdown || '無題のメモ'
+          payload.memo.markdown = payload.memo.markdown || '# 無題のメモ'
           payload.memo.tags = payload.memo.tags || []
           payload.memo.created = payload.memo.created || sysdate
           payload.memo.updated = payload.memo.updated || sysdate
@@ -179,6 +179,21 @@ describe('Sidebar.vue', () => {
       expect(store.state.selectedMemoIndex).toBe(3)
       const $listItems = wrapper.findAll('.memo-list-item')
       expect($listItems.at(3).attributes()['data-selected']).toBe('true')
+    })
+  })
+
+  describe('メモ追加ボタンクリック時', () => {
+    beforeEach(() => {
+      wrapper.find('[data-test="add-memo-button"]').trigger('click')
+    })
+    test('選択中メモはそのまま', () => {
+      expect(store.state.selectedMemoIndex).toBe(0)
+    })
+
+    test('メモが１件追加されているべき', () => {
+      const $titles = wrapper.findAll('.memo-title')
+      expect($titles.length).toBe(5)
+      expect($titles.at(4).text()).toBe('# 無題のメモ')
     })
   })
 })
