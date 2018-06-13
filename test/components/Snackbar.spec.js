@@ -24,8 +24,8 @@ describe('Snackbar.vue', () => {
 
     store = new Vuex.Store({
       state: {
-        snackbarText: 'SampleText',
-        showSnackbar: true,
+        snackbarText: '',
+        showSnackbar: false,
       },
       actions: {
         setShowSnackbar ({ commit }, { isShow, text}) {
@@ -53,28 +53,69 @@ describe('Snackbar.vue', () => {
     jest.runAllTimers()
   })
 
-  describe('初期表示', () => {
-
-    test('スナップショット', () => {
-      expect(wrapper).toMatchSnapshot()
-    })
-
-    test('スナックバーが表示されている', () => {
-      const $text = wrapper.find('[data-test="snackbar-text"]')
-      expect($text.text()).toBe('SampleText')
+  xdescribe('初期表示', () => {
+    test('なにも表示されていない', () => {
+      expect(wrapper.html()).toBe(undefined)
     })
   })
 
-  describe('閉じるボタンクリック時', () => {
+
+  describe('スナックバー表示時', () => {
+
     beforeEach(() => {
-      expect(store.state.showSnackbar).toBe(true)
-      wrapper.find('[data-test="close-button"]').trigger('click')
+      store.dispatch('setShowSnackbar', {
+        isShow: true,
+        text: 'SampleText'
+      })
       jest.runAllTimers()
     })
 
-    test('スナックバーが表示されてない', () => {
-      expect(store.state.showSnackbar).toBe(false)
+    test('スナップショット', () => {
+      expect(wrapper.html()).toMatchSnapshot()
+    })
+
+    xtest('スナックバーが表示されている', () => {
+      const $text = wrapper.find('[data-test="snackbar-text"]')
+      expect($text.text()).toBe('SampleText')
+    })
+
+    describe('閉じるボタンクリック時', () => {
+      beforeEach(() => {
+        const $closeButton = wrapper.find('[data-test="close-button"]')
+        $closeButton.trigger('click')
+        jest.runAllTimers()
+      })
+
+      test('スナックバーが表示されてない', () => {
+        expect(wrapper.html()).toBe(undefined)
+        expect(store.state.showSnackbar).toBe(false)
+      })
+
+      describe('再度スナックバー表示時', () => {
+        beforeEach(() => {
+          store.dispatch('setShowSnackbar', {
+            isShow: true,
+            text: 'NewSampleText'
+          })
+        })
+
+        test('スナックバーが表示される', () => {
+          expect(store.state.showSnackbar).toBe(true)
+          const $text = wrapper.find('[data-test="snackbar-text"]')
+          expect($text.text()).toBe('NewSampleText')
+        })
+
+        describe('4秒後', () => {
+          beforeEach(() => {
+            jest.advanceTimersByTime(4000)
+          })
+
+          test('スナックバーが非表示', () => {
+            expect(store.state.showSnackbar).toBe(undefined)
+          })
+        })
+
+      })
     })
   })
-
 })

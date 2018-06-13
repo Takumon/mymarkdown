@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Snackbar.vue 初期表示 スナップショット 1`] = `
+exports[`Snackbar.vue スナックバー表示時 スナップショット 1`] = `
 <div class="md-snackbar md-position-center md-theme-default" name="md-snackbar" appear="">
   <div class="md-snackbar-content"><span data-test="snackbar-text">SampleText</span>
     <button type="button" class="md-button md-theme-default" data-test="close-button">
