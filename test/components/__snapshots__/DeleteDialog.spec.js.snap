@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteDialog.vue 初期表示 スナップショット 1`] = `
+<div class="md-dialog md-theme-default" name="md-dialog" data-test="delete-dialog" md-active="true">
+  <div class="md-dialog-container" tabindex="-1"><span class="md-dialog-title md-title">Delete the memo?</span>
+    <div class="md-dialog-content">Once deleted, it can not be restored.
+      <br>Do you really want to delete this?</div>
+    <div class="md-dialog-actions">
+      <button type="button" class="md-button md-theme-default">
+        <div class="md-ripple">
+          <div class="md-button-content">Cancel</div>
+        </div>
+      </button>
+      <button type="button" class="md-button md-primary md-theme-default">
+        <div class="md-ripple">
+          <div class="md-button-content">Delete</div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
