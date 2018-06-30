@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@nuxtjs/pwa": "^2.0.8",
-    "@vue/test-utils": "^1.0.0-beta.16",
     "axios": "^0.18.0",
     "firebase": "^5.0.4",
     "highlightjs": "^9.10.0",
@@ -43,6 +42,7 @@
     "@storybook/addon-links": "^3.4.5",
     "@storybook/addon-notes": "^3.4.5",
     "@storybook/vue": "^3.4.6",
+    "@vue/test-utils": "^1.0.0-beta.20",
     "ajv": "^6.0.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
