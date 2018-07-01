@@ -1,5 +1,6 @@
 <template>
   <md-dialog-confirm
+      data-test="delete-dialog"
       :md-active.sync="showDeletingDialog"
       md-title="Delete the memo?"
       md-content="Once deleted, it can not be restored.<br>Do you really want to delete this?"
@@ -17,9 +18,6 @@ export default {
   name: 'DeleteDialog',
   mixins: [ MemoController ],
   computed: {
-    ...mapState([
-      'selectedMemoIndex',
-    ]),
     showDeletingDialog: {
       get () {
         return this.$store.state.showDeletingDialog

@@ -1,4 +1,4 @@
-import firebase from '~/plugins/firebase'
+import firebase from '~/plugins/firebase.js'
 import * as firebaseCore from 'firebase'
 
 export function auth () {
@@ -9,14 +9,23 @@ export function auth () {
   })
 }
 
+// リダイレクトで帰って来た時の認証
+export function authInLogin () {
+  return new Promise((resolve, reject) => {
+    firebase.auth().getRedirectResult().then(result => {
+      resolve(result.credential ? result.user: false)
+    })
+  })
+}
+
 export function signOut() {
   return firebase.auth().signOut()
 }
 
 
-
+// PWAの場合popuoだとうまくいかないのでリダイレクトでログインする
 export function loginWith(provider) {
-  return firebase.auth().signInWithPopup(provider)
+  return firebase.auth().signInWithRedirect(provider)
 }
 
 

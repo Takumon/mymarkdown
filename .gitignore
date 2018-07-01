@@ -16,3 +16,5 @@ yarn-error.log
 # Nuxt generate
 dist
 
+# Jest Test
+coverage

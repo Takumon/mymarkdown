@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation2.vue 初期表示 スナップショット 1`] = `
+<div class="md-toolbar-row">
+  <div class="md-tabs md-primary md-alignment-left md-no-transition md-theme-default">
+    <div class="md-tabs-navigation md-elevation-0">
+      <button type="button" class="md-button md-theme-default" mdicon="mode_edit">
+        <div class="md-ripple">
+          <div class="md-button-content">
+            <i class="md-icon md-icon-font md-tab-icon md-theme-default">mode_edit</i> <span class="md-tab-label"></span></div>
+        </div>
+      </button>
+      <button type="button" class="md-button md-theme-default md-active" mdicon="chrome_reader_mode">
+        <div class="md-ripple">
+          <div class="md-button-content">
+            <i class="md-icon md-icon-font md-tab-icon md-theme-default">chrome_reader_mode</i> <span class="md-tab-label"></span></div>
+        </div>
+      </button>
+      <button type="button" class="md-button md-theme-default" mdicon="description">
+        <div class="md-ripple">
+          <div class="md-button-content">
+            <i class="md-icon md-icon-font md-tab-icon md-theme-default">description</i> <span class="md-tab-label"></span></div>
+        </div>
+      </button> <span class="md-tabs-indicator"></span></div>
+    <div class="md-content md-tabs-content md-theme-default" style="height: 0px; display: none;">
+      <div class="md-tabs-container">
+        <div id="tab-editor" class="md-tab"></div>
+        <div id="tab-editor-and-preview" class="md-tab"></div>
+        <div id="tab-preview" class="md-tab"></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

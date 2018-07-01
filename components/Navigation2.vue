@@ -14,14 +14,9 @@ import { mapState , mapActions } from 'vuex'
 export default {
   name: 'Navigation2',
   computed: {
-    textEditorPreviewMode: {
-      get () {
-        return this.$store.state.textEditorPreviewMode
-      },
-      set (mode) {
-        this.setTextEditorPreviewMode(mode)
-      }
-    },
+    ...mapState([
+      'textEditorPreviewMode'
+    ])
   },
   methods: {
     ...mapActions([

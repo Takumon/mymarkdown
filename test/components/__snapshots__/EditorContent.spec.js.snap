@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditContent.vue 初期表示 スナップショット 1`] = `
+<div>
+  <div class="memo-info-area">
+    <div class="md-field md-chips md-theme-default md-has-placeholder md-theme-default md-has-value">
+      <div tabindex="0" class="md-chip md-theme-default md-deletable md-clickable md-chip-enter md-chip-enter-active">
+        <div class="md-ripple">Java </div>
+        <button type="button" class="md-button md-icon-button md-dense md-input-action md-clear md-theme-default md-input-action-enter md-input-action-enter-active" tabindex="-1">
+          <div class="md-ripple">
+            <div class="md-button-content">
+              <i class="md-icon md-icon-font md-icon-image md-theme-default">
+                <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                </svg>
+              </i>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div tabindex="0" class="md-chip md-theme-default md-deletable md-clickable md-chip-enter md-chip-enter-active">
+        <div class="md-ripple">JavaScript </div>
+        <button type="button" class="md-button md-icon-button md-dense md-input-action md-clear md-theme-default md-input-action-enter md-input-action-enter-active" tabindex="-1">
+          <div class="md-ripple">
+            <div class="md-button-content">
+              <i class="md-icon md-icon-font md-icon-image md-theme-default">
+                <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                </svg>
+              </i>
+            </div>
+          </div>
+        </button>
+      </div>
+      <input type="text" id="md-chips-tempid" placeholder="Add Tag..." class="md-input">
+      <!---->
+      <!---->
+      <!---->
+    </div>
+  </div>
+  <div data-test="editor-content" class="editor tab-editor-and-preview">
+    <textarea data-test="editor" class="markdown"></textarea>
+    <div data-test="preview" id="preview" class="preview markdown-body">
+      <h1 id="-">マークダウン形式のメモ</h1>
+      <ul>
+        <li>結構</li>
+        <li>たくさん</li>
+        <li>めもる</li>
+        <li>
+          <input disabled="" type="checkbox"> チェックボックスその１</li>
+        <li>
+          <input checked="" disabled="" type="checkbox"> チェックボックスその２</li>
+      </ul>
+      <pre><code>public static void main(String[] args) {
+  System.out.println("Test!");
+}</code></pre><pre><code class="Java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+  System.out.println(<span class="hljs-string">"Test!"</span>);
+}</code></pre>
+    </div>
+  </div>
+  <div class="characters">Characters 239</div>
+  <div class="date-area">
+    <div>Updated: "2018-02-01T03:00:00.000Z"</div>
+    <div>Created: "2018-02-01T03:00:00.000Z"</div>
+  </div>
+</div>
+`;

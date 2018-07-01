@@ -12,6 +12,12 @@ const store = () => new Vuex.Store({
     loginUser: null,
     textEditorPreviewMode: 'tab-editor-and-preview',
     nowSaving: false,
+    // ログアウトしてログイン画面にきたことを判断するために使用する
+    // ログイン画面表示時にgetRedirectResultで認証判定を実施するが、
+    // 一度ログインしてログアウトした際にfirebaseのsignoutを実行してもgetRedirectResultでユーザが取得できてしまう
+    // ログアウトした直後はログイン画面を表示したいので、ログアウト時に本属性の値をtrueに設定し
+    // ログイン画面表示時のgetRedirectResultでの判定材料として使用する
+    fromLogout: false,
   },
   actions: {
     setMemos ( { commit}, memos) {
@@ -86,6 +92,12 @@ const store = () => new Vuex.Store({
         resolve()
       })
     },
+    setFromLogout( { commit }, fromLogout) {
+      return new Promise((resolve, reject) => {
+        commit( 'setFromLogout', { fromLogout })
+        resolve()
+      })
+    }
   },
   mutations: {
     setMemos (state, payload) {
@@ -93,7 +105,7 @@ const store = () => new Vuex.Store({
     },
     addMemo (state, payload) {
       const sysdate = new Date().toString()
-      payload.memo.markdown = payload.memo.markdown || '無題のメモ'
+      payload.memo.markdown = payload.memo.markdown || '# 無題のメモ'
       payload.memo.tags = payload.memo.tags || []
       payload.memo.created = payload.memo.created || sysdate
       payload.memo.updated = payload.memo.updated || sysdate
@@ -137,7 +149,10 @@ const store = () => new Vuex.Store({
     },
     setNowSaving (state, payload) {
       state.nowSaving = payload.nowSaving
-    }
+    },
+    setFromLogout (state, payload) {
+      state.fromLogout = payload.fromLogout
+    },
   }
 })
 

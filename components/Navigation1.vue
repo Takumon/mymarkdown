@@ -17,20 +17,12 @@
 
 <script>
 import { mapState , mapActions } from 'vuex'
-import { signOut } from '~/plugins/auth'
+import { signOut } from '~/plugins/auth.js'
 
 
 export default {
   name: 'Navigation1',
   computed: {
-    showSidebar: {
-      get () {
-        return this.$store.state.showSidebar
-      },
-      set (isShow) {
-        this.setShowSidebar(isShow)
-      }
-    },
     ...mapState([
       'loginUser'
     ]),
@@ -39,15 +31,18 @@ export default {
     ...mapActions([
       'setShowSidebar',
       'setShowSnackbar',
+      'setFromLogout'
     ]),
     logout: function() {
       signOut().then(() => {
-        this.$router.replace('/login', () => {
-          this.setShowSnackbar({
-            isShow: true,
-            text: 'Logged out'
+        this.setFromLogout(true).then(() => {
+          this.$router.replace('/login', () => {
+            this.setShowSnackbar({
+              isShow: true,
+              text: 'Logged out'
+            })
           })
-        });
+        })
       })
     },
   },

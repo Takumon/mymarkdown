@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snackbar.vue スナックバー表示時 スナップショット 1`] = `
+<div class="md-snackbar md-position-center md-theme-default md-snackbar-leave md-snackbar-leave-active">
+  <div class="md-snackbar-content"><span data-test="snackbar-text">SampleText</span>
+    <button type="button" class="md-button md-theme-default" data-test="close-button">
+      <div class="md-ripple">
+        <div class="md-button-content">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+`;
