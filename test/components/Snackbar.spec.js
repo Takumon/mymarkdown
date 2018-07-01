@@ -53,7 +53,7 @@ describe('Snackbar.vue', () => {
     jest.runAllTimers()
   })
 
-  xdescribe('初期表示', () => {
+  describe('初期表示', () => {
     test('なにも表示されていない', () => {
       expect(wrapper.html()).toBe(undefined)
     })

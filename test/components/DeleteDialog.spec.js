@@ -66,7 +66,6 @@ describe('DeleteDialog.vue', () => {
 
     test('ダイアログが表示される', () => {
       expect(store.state.showDeletingDialog).toBe(true)
-      console.log(wrapper.vm.$el.innerHTML)
       const $dialogTitle = wrapper.find('[data-test="delete-dialog"] .md-title')
       expect($dialogTitle.isVisible()).toBe(true)
     })
